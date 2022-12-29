@@ -10,6 +10,7 @@ import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
+import 'package:world_cup_system_frontend_web/views/tickets-view.dart';
 
 class NavigationBarViewNew extends StatefulWidget {
   const NavigationBarViewNew({
@@ -188,7 +189,7 @@ class _NavigationBarState extends State<NavigationBarViewNew>
                       controller: _tabController,
                       children: [
                         MatchesView(),
-                        MatchesView(),
+                        TicketsView(),
                         MatchesView(),
                       ],
                     ),

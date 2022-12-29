@@ -5,6 +5,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:world_cup_system_frontend_web/common/components/guest-button.dart';
+import 'package:world_cup_system_frontend_web/common/components/signup-button.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
@@ -33,6 +35,19 @@ class _SignInState extends MomentumState<SignIn> {
     // _tryConnection();
     Navigator.pop(context);
     Navigator.pushNamed(context, '/home');
+    // if (_isConnectionSuccessful != false) {
+    if (_formKey.currentState!.validate()) {
+      // Momentum.controller<AuthController>(context).handleEmailLogin(
+      //     _emailController.text.trim(), _passwordController.text, context);
+    }
+    // }
+  }
+
+//Route user to sign up page
+  Future<void> _signUpSubmit() async {
+    // _tryConnection();
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/signUp');
     // if (_isConnectionSuccessful != false) {
     if (_formKey.currentState!.validate()) {
       // Momentum.controller<AuthController>(context).handleEmailLogin(
@@ -217,6 +232,36 @@ class _SignInState extends MomentumState<SignIn> {
                                             onPressed: _submit,
                                           );
                                         }),
+                                    // add space between buttons
+                                    Container(
+                                      height: _height * 0.01,
+                                    ),
+                                    MomentumBuilder(
+                                        controllers: [],
+                                        builder: (context, snapshot) {
+                                          var loadingState = false;
+                                          // snapshot<AuthModel>().loginInProgress;
+                                          return SignUpButton(
+                                            getStarted: false,
+                                            signIn: true,
+                                            onPressed: _signUpSubmit,
+                                          );
+                                        }),
+                                    // add space between buttons
+                                    Container(
+                                      height: _height * 0.01,
+                                    ),
+                                    MomentumBuilder(
+                                        controllers: [],
+                                        builder: (context, snapshot) {
+                                          var loadingState = false;
+                                          // snapshot<AuthModel>().loginInProgress;
+                                          return GuestButton(
+                                            getStarted: false,
+                                            signIn: true,
+                                            onPressed: _submit,
+                                          );
+                                        })
 
                                     // ListView(
                                     //   scrollDirection: Axis.horizontal,

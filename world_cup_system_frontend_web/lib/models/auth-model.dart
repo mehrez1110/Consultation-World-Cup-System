@@ -23,6 +23,7 @@ class AuthModel extends MomentumModel<AuthController> {
   final tempToken;
   final verified;
   final bool loading;
+  final role;
 
   AuthModel(
     AuthController controller, {
@@ -41,6 +42,7 @@ class AuthModel extends MomentumModel<AuthController> {
     this.verified = false,
     this.area = "sheikh zayed",
     this.loading = false,
+    this.role = "user",
   }) : super(controller);
 
   @override
@@ -60,6 +62,7 @@ class AuthModel extends MomentumModel<AuthController> {
     final tempToken,
     final verified,
     bool? loading,
+    String? role,
   }) {
     AuthModel(
       controller,
@@ -81,6 +84,7 @@ class AuthModel extends MomentumModel<AuthController> {
       verified: verified ?? this.verified,
       tempToken: tempToken ?? this.tempToken,
       loading: loading ?? this.loading,
+      role: role ?? this.role,
     ).updateMomentum();
   }
 }

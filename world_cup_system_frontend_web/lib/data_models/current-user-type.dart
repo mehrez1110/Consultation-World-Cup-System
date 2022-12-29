@@ -14,6 +14,7 @@ class CurrentUserType {
   final favoriteSport;
   final wallet;
   final fcmToken;
+  final nationality;
 
   CurrentUserType({
     this.firstName = 'user',
@@ -31,5 +32,6 @@ class CurrentUserType {
     this.favoriteSport,
     this.wallet = 0.0,
     this.fcmToken,
+    this.nationality,
   });
 }

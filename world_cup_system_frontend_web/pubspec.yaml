@@ -38,6 +38,7 @@ dependencies:
   shared_preferences: ^2.0.15
   intl: ^0.17.0
   http: ^0.13.5
+  string_capitalize: ^0.0.10
 
 dev_dependencies:
   flutter_test:

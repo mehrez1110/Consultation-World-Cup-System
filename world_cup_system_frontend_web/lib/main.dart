@@ -8,6 +8,7 @@ import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
+import 'package:world_cup_system_frontend_web/views/sign-up-view.dart';
 
 // import 'controllers/booking-sports-events-controller.dart';
 
@@ -76,6 +77,7 @@ class _MyAppState extends MomentumState<MyApp> {
         '/': (context) => SignIn(),
         '/home': (context) => NavigationBarViewNew(),
         '/matches': (context) => MatchesView(),
+        '/signUp': (context) => SignUp(),
       },
       color: secondary,
       debugShowCheckedModeBanner: false,
