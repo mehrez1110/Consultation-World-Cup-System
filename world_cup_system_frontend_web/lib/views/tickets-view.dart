@@ -13,7 +13,22 @@ class TicketsView extends StatelessWidget {
         child: Container(
       width: _width * 0.7,
       child: Column(
-        children: [Ticket(), Ticket(), Ticket(), Ticket(), Ticket(), Ticket()],
+        children: [
+          const Text("My Tickets: ",
+              style: TextStyle(
+                  fontSize: 30, fontWeight: FontWeight.bold, color: primary)),
+          Ticket(),
+          Ticket(
+            firstTeam: "Egypt",
+            secondTeam: "France",
+            vip: true,
+          ),
+          Ticket(
+            firstTeam: "Brazil",
+            secondTeam: "Argentina",
+            vip: true,
+          ),
+        ],
       ),
     ));
   }

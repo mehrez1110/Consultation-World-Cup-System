@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
 import 'package:world_cup_system_frontend_web/views/tickets-view.dart';
@@ -21,7 +22,7 @@ class NavigationBarViewNew extends StatefulWidget {
   State<NavigationBarViewNew> createState() => _NavigationBarState();
 }
 
-class _NavigationBarState extends State<NavigationBarViewNew>
+class _NavigationBarState extends MomentumState<NavigationBarViewNew>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   void goToSearch() {
@@ -29,10 +30,29 @@ class _NavigationBarState extends State<NavigationBarViewNew>
   }
 
   @override
-  void initState() {
-    super.initState();
+  void initMomentumState() {
+    var auth = Momentum.controller<AuthController>(context).model;
+    var role = "Guest";
+    if (auth.currentUser != null) {
+      if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
+        role = "ADMIN";
+      } else if (auth.currentUser.role.any((role) => role.name == "MANAGER")) {
+        role = "MANAGER";
+      } else if (auth.currentUser.role.any((role) => role.name == "USER")) {
+        role = "USER";
+      }
+    }
 
-    _tabController = TabController(vsync: this, length: 3, initialIndex: 0)
+    _tabController = TabController(
+        vsync: this,
+        length: role == "ADMIN"
+            ? 5
+            : (role == 'MANAGER')
+                ? 4
+                : role == 'USER'
+                    ? 3
+                    : 1,
+        initialIndex: 0)
       ..addListener(() {
         setState(() {
           switch (_tabController.index) {
@@ -57,11 +77,22 @@ class _NavigationBarState extends State<NavigationBarViewNew>
             case 3:
               // BookingsView();
               SignIn();
+              break;
+
+            case 4:
+              SignIn();
+
+              break;
+            case 5:
+              SignIn();
 
               break;
           }
         });
       });
+
+    print("object");
+    super.initMomentumState();
   }
 
   late StreamSubscription _connectivitySubscription;
@@ -92,11 +123,33 @@ class _NavigationBarState extends State<NavigationBarViewNew>
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
     return MomentumBuilder(
-        controllers: [],
+        controllers: [AuthController],
         builder: (context, snapshot) {
+          // var authModel = Momentum.controller<AuthController>(context).model;
+          var auth = Momentum.controller<AuthController>(context).model;
+          var role = "Guest";
+          if (auth.currentUser != null) {
+            if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
+              role = "ADMIN";
+            } else if (auth.currentUser.role
+                .any((role) => role.name == "MANAGER")) {
+              role = "MANAGER";
+            } else if (auth.currentUser.role
+                .any((role) => role.name == "USER")) {
+              role = "USER";
+            }
+          }
+
           return DefaultTabController(
-            length: 3,
+            length: role == 'ADMIN'
+                ? 5
+                : (role == 'MANAGER')
+                    ? 4
+                    : role == 'USER'
+                        ? 3
+                        : 1,
             child: Scaffold(
               appBar: AppBar(
                 actions: [
@@ -123,59 +176,114 @@ class _NavigationBarState extends State<NavigationBarViewNew>
                 ),
                 backgroundColor: Color(0xFF56042C),
                 title: Container(
-                  width: 400,
-                  decoration: BoxDecoration(
-                    color: primary,
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Color(0xFF56042C),
-                        Color.fromARGB(255, 86, 4, 38),
-                      ],
+                    width: 400,
+                    decoration: BoxDecoration(
+                      color: primary,
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Color(0xFF56042C),
+                          Color.fromARGB(255, 86, 4, 38),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    // onTap: (int value) {
-                    //   print('Current Index: ${_tabController.index}');
-                    //   if (_tabController.index == 3) {
+                    child: role == 'USER'
+                        ? TabBar(
+                            controller: _tabController,
+                            tabs: [
+                              Tab(
+                                iconMargin: EdgeInsets.all(5),
+                                text: 'Matches',
+                              ),
+                              Tab(
+                                text: 'Tickets',
+                              ),
+                              Tab(
+                                text: 'Profile',
+                              ),
+                            ],
+                            labelStyle: TextStyle(
+                                fontSize: 11.0, fontFamily: 'SfProRounded'),
+                            labelColor: secondary,
+                            unselectedLabelColor: Colors.white,
 
-                    //     print('================================');
+                            // indicatorSize: TabBarIndicatorSize.label,
+                            indicatorColor: secondary,
+                          )
+                        : role == 'Guest'
+                            ? TabBar(
+                                controller: _tabController,
+                                tabs: [
+                                  Tab(
+                                    iconMargin: EdgeInsets.all(5),
+                                    text: 'Matches',
+                                  )
+                                ],
+                                labelStyle: TextStyle(
+                                    fontSize: 11.0, fontFamily: 'SfProRounded'),
+                                labelColor: secondary,
+                                unselectedLabelColor: Colors.white,
 
-                    //     print('---------------------------------');
+                                // indicatorSize: TabBarIndicatorSize.label,
+                                indicatorColor: secondary,
+                              )
+                            : (role == 'MANAGER')
+                                ? TabBar(
+                                    controller: _tabController,
+                                    tabs: [
+                                      Tab(
+                                        iconMargin: EdgeInsets.all(5),
+                                        text: 'Matches',
+                                      ),
+                                      Tab(
+                                        text: 'Tickets',
+                                      ),
+                                      Tab(
+                                        text: 'Stadiums',
+                                      ),
+                                      Tab(
+                                        text: 'Profile',
+                                      ),
+                                    ],
+                                    labelStyle: TextStyle(
+                                        fontSize: 11.0,
+                                        fontFamily: 'SfProRounded'),
+                                    labelColor: secondary,
+                                    unselectedLabelColor: Colors.white,
 
-                    //   }
-                    // },
-                    // indicator: BoxDecoration(
-                    //   image: DecorationImage(
-                    //     alignment: Alignment.topCenter,
-                    //     scale: (3.1 / 390) * _width,
-                    //     image: AssetImage("lib/assets/Union-3.png"),
-                    //     // fit: BoxFit.cover,
-                    //   ),
-                    // ),
-                    tabs: [
-                      Tab(
-                        iconMargin: EdgeInsets.all(5),
-                        text: 'Matches',
-                      ),
-                      Tab(
-                        text: 'Tickets',
-                      ),
-                      Tab(
-                        text: 'Profile',
-                      ),
-                    ],
-                    labelStyle:
-                        TextStyle(fontSize: 11.0, fontFamily: 'SfProRounded'),
-                    labelColor: secondary,
-                    unselectedLabelColor: Colors.white,
+                                    // indicatorSize: TabBarIndicatorSize.label,
+                                    indicatorColor: secondary,
+                                  )
+                                : TabBar(
+                                    controller: _tabController,
+                                    tabs: [
+                                      Tab(
+                                        iconMargin: EdgeInsets.all(5),
+                                        text: 'Matches',
+                                      ),
+                                      Tab(
+                                        text: 'Tickets',
+                                      ),
+                                      Tab(
+                                        text: 'Stadiums',
+                                      ),
+                                      Tab(
+                                        text: 'Users',
+                                      ),
+                                      Tab(
+                                        text: 'Profile',
+                                      ),
+                                    ],
+                                    labelStyle: TextStyle(
+                                        fontSize: 11.0,
+                                        fontFamily: 'SfProRounded'),
+                                    labelColor: secondary,
+                                    unselectedLabelColor: Colors.white,
 
-                    // indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: secondary,
-                  ),
-                ),
+                                    // indicatorSize: TabBarIndicatorSize.label,
+                                    indicatorColor: secondary,
+                                  )),
               ),
               body: GestureDetector(
                 onTap: () {
@@ -185,18 +293,46 @@ class _NavigationBarState extends State<NavigationBarViewNew>
                 },
                 child: Stack(
                   children: [
-                    TabBarView(
-                      controller: _tabController,
-                      children: [
-                        MatchesView(),
-                        TicketsView(),
-                        MatchesView(),
-                      ],
-                    ),
+                    role == 'USER'
+                        ? TabBarView(
+                            controller: _tabController,
+                            children: [
+                              MatchView(),
+                              TicketsView(),
+                              MatchView(),
+                            ],
+                          )
+                        : (role == 'MANAGER')
+                            ? TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  MatchView(),
+                                  TicketsView(),
+                                  MatchView(),
+                                  MatchView(),
+                                ],
+                              )
+                            : (role == 'ADMIN')
+                                ? TabBarView(
+                                    controller: _tabController,
+                                    children: [
+                                      MatchView(),
+                                      TicketsView(),
+                                      MatchView(), //stadiums
+                                      MatchView(), //users
+                                      MatchView(), //profile
+                                    ],
+                                  )
+                                : TabBarView(
+                                    controller: _tabController,
+                                    children: [
+                                      MatchView(),
+                                    ],
+                                  ),
                   ],
                 ),
               ),
-              // getBodyWidget(_selectedIndex),
+              // getBodymodel(_selectedIndex),
               // widgetOptions.elementAt(_selectedIndex),
               backgroundColor: Color(0xFFECEFFD),
 

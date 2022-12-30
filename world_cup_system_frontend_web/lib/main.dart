@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:momentum/momentum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
@@ -36,7 +39,7 @@ Future<void> main() async {
 
 Momentum momentum() {
   return Momentum(
-    controllers: [],
+    controllers: [AuthController(), MatchController(), TicketController()],
     child: MyApp(),
     persistSave: (context, key, value) async {
       var sharedPref = await SharedPreferences.getInstance();
@@ -76,7 +79,7 @@ class _MyAppState extends MomentumState<MyApp> {
       routes: {
         '/': (context) => SignIn(),
         '/home': (context) => NavigationBarViewNew(),
-        '/matches': (context) => MatchesView(),
+        '/matches': (context) => MatchView(),
         '/signUp': (context) => SignUp(),
       },
       color: secondary,

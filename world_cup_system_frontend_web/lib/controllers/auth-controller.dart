@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
 import 'dart:io';
+import 'dart:js';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:momentum/momentum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/data_models/current-user-type.dart';
 import 'package:world_cup_system_frontend_web/models/auth-model.dart';
+import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
 class AuthController extends MomentumController<AuthModel> {
   @override
@@ -27,6 +31,138 @@ class AuthController extends MomentumController<AuthModel> {
 
 // Navigate to login options page
   void goToLoginPage(context) {}
+
+  Future<void> handleUsernNameLogin(
+      String username, String password, context) async {
+    try {
+      print("pass: $password");
+      model.update(loginInProgress: true);
+      var url = Uri.http(STAGING_URL, "/api/login");
+      var response = await http.post(
+        url,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: jsonEncode(
+            <String, dynamic>{"username": username, "password": password}),
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        var accessToken = jsonResponse["access_token"];
+        var refreshToken = jsonResponse["refresh_token"];
+        model.update(
+          tempToken: accessToken,
+        );
+        var id = jsonResponse["id"];
+        // Get user data by calling the user endpoint
+        await getUserData(context, username);
+        // model.update(
+        //   loginInProgress: false,
+        // );
+        if (model.currentUser!.status == "pending" ||
+            model.currentUser!.status == "rejected") {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text("📣Attention athlete"),
+              content: Text("Your account is not approved yet"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            ),
+          );
+        } else {
+          Navigator.pop(context);
+          Navigator.pushNamed(
+            context,
+            "/home",
+          );
+        }
+      } else {
+        // model.update(loginInProgress: false);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("📣Attention athlete"),
+            content: Text("Something went wrong, please try again later"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      // model.update(loginInProgress: false);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("Something went wrong, please try again later"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  // get user data by calling the user endpoint
+  Future<void> getUserData(context, String userName) async {
+    try {
+      var url = Uri.http(
+          STAGING_URL, "/api/users/by-username/", {"username": userName});
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print("okaaayyy id");
+        var jsonResponse = convert.jsonDecode(response.body);
+        var currentUser = CurrentUserType.fromJson(jsonResponse);
+        model.update(currentUser: currentUser);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("Something went wrong, please try again later"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   // void goToHomePage(context, Ticket? toBeRatedTicket) {
   //   Navigator.push(
@@ -359,5 +495,4 @@ class AuthController extends MomentumController<AuthModel> {
   //     debugPrint("Error caught in setFcmToken ${e.toString()}");
   //   }
   // }
-
 }

@@ -9,6 +9,7 @@ import 'package:world_cup_system_frontend_web/common/components/guest-button.dar
 import 'package:world_cup_system_frontend_web/common/components/signup-button.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
 import '../common/components/regular_text_input_new.dart';
@@ -33,11 +34,11 @@ class _SignInState extends MomentumState<SignIn> {
 
   Future<void> _submit() async {
     // _tryConnection();
-    Navigator.pop(context);
-    Navigator.pushNamed(context, '/home');
+
     // if (_isConnectionSuccessful != false) {
     if (_formKey.currentState!.validate()) {
-      // Momentum.controller<AuthController>(context).handleEmailLogin(
+      Momentum.controller<AuthController>(context).handleUsernNameLogin(
+          _usernameController.text, _passwordController.text, context);
       //     _emailController.text.trim(), _passwordController.text, context);
     }
     // }
@@ -48,6 +49,18 @@ class _SignInState extends MomentumState<SignIn> {
     // _tryConnection();
     Navigator.pop(context);
     Navigator.pushNamed(context, '/signUp');
+    // if (_isConnectionSuccessful != false) {
+    if (_formKey.currentState!.validate()) {
+      // Momentum.controller<AuthController>(context).handleEmailLogin(
+      //     _emailController.text.trim(), _passwordController.text, context);
+    }
+    // }
+  }
+
+  Future<void> _guestSubmit() async {
+    // _tryConnection();
+    Navigator.pop(context);
+    Navigator.pushNamed(context, '/home');
     // if (_isConnectionSuccessful != false) {
     if (_formKey.currentState!.validate()) {
       // Momentum.controller<AuthController>(context).handleEmailLogin(
@@ -185,7 +198,6 @@ class _SignInState extends MomentumState<SignIn> {
                                                       Color(0x94192B37),
                                                   errorBorderColor:
                                                       Color(0xFFFD7542),
-                                                  email: true,
                                                   label: "Username",
                                                   hintText: "Username",
                                                   controller:
@@ -208,7 +220,7 @@ class _SignInState extends MomentumState<SignIn> {
                                                       Color(0x94192B37),
                                                   errorBorderColor:
                                                       Color(0xFFFD7542),
-                                                  password: true,
+                                                  // password: true,
                                                   label: "Password",
                                                   hintText: "Password",
                                                   protectedText: _obscureText,
@@ -259,7 +271,7 @@ class _SignInState extends MomentumState<SignIn> {
                                           return GuestButton(
                                             getStarted: false,
                                             signIn: true,
-                                            onPressed: _submit,
+                                            onPressed: _guestSubmit,
                                           );
                                         })
 
