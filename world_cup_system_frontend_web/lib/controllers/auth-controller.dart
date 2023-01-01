@@ -36,12 +36,13 @@ class AuthController extends MomentumController<AuthModel> {
       var response = await http.post(
         url,
         headers: {
+          'Content-Type': 'application/json',
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
           'Accept': '*/*'
         },
         body: jsonEncode(
-            <String, dynamic>{"username": username, "password": password}),
+            <String, String>{"username": username, "password": password}),
       );
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body);
@@ -138,7 +139,7 @@ class AuthController extends MomentumController<AuthModel> {
         print("okaaayyy id");
         var jsonResponse = convert.jsonDecode(response.body);
         var currentUser = CurrentUserType.fromJson(jsonResponse);
-        model.update(currentUser: currentUser);
+        model.update(currentUser: currentUser, id: jsonResponse["id"]);
       }
     } catch (e) {
       showDialog(

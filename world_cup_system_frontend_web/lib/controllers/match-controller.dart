@@ -30,7 +30,7 @@ class MatchController extends MomentumController<MatchModel> {
         // 'Authorization':
         //     'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
         "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         'Accept': '*/*'
       });
       if (response.statusCode == 200) {

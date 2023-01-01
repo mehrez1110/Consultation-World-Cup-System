@@ -7,19 +7,20 @@ import 'package:world_cup_system_frontend_web/models/ticket-model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import '../common/constants.dart';
+import '../models/vip-ticket-model.dart';
 import 'auth-controller.dart';
 
-class TicketController extends MomentumController<TicketModel> {
+class VipTicketController extends MomentumController<VipTicketModel> {
   @override
-  TicketModel init() {
-    return TicketModel(
+  VipTicketModel init() {
+    return VipTicketModel(
       this,
     );
   }
 
-  Future<void> getUserTickets(userId, context) async {
+  Future<void> getUserVipTickets(userId, context) async {
     try {
-      var url = Uri.http(STAGING_URL, "/api/tickets/by-user-id/",
+      var url = Uri.http(STAGING_URL, "/api/vip-tickets/by-user-id/",
           {'userId': userId.toString()});
 
       var response = await http.get(

@@ -87,209 +87,198 @@ class _SignInState extends MomentumState<SignIn> {
           return Scaffold(
             backgroundColor:
                 Color(0xFF56042C), //set the colors of the scaffold is white
-            body: GestureDetector(
-              onTap: () {
-                // if (_isConnectionSuccessful == false) {
-                //   _tryConnection();
-                // }
-              },
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: 330,
-                    child: Image.asset(
-                        "lib/assets/World-Cup-logo-landscape-on-dark.webp"),
-                  ),
-                  Center(
-                    child: Expanded(
-                      child: Container(
-                        width: 430,
-                        height: 350,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        // decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     gradient: LinearGradient(
-                        //       begin: Alignment.topCenter,
-                        //       end: Alignment.bottomCenter,
-                        //       colors: [
-                        //         Color(0xFFFBFBFE),
-                        //         Color(0xFFECEFFD),
-                        //       ],
-                        //     )),
-                        // decoration: BoxDecoration(
-                        //   gradient:
-                        // ),
-                        child: Stack(
-                          alignment: AlignmentDirectional.topStart,
-                          children: [
-                            Container(
-                              child: SafeArea(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    // Container(
-                                    //   margin: EdgeInsets.only(
-                                    //     left: (29 / 390) * _width,
-                                    //     top: (30 / 844) * _height,
-                                    //   ),
-                                    //   child: Image.asset(
-                                    //     'lib/assets/fora-logo.png',
-                                    //     height: (59 / 844) * _height,
-                                    //     width: (111 / 390) * _width,
-                                    //     alignment: Alignment.centerLeft,
-                                    //   ),
-                                    // ),
+            body: Column(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 330,
+                  child: Image.asset(
+                      "lib/assets/World-Cup-logo-landscape-on-dark.webp"),
+                ),
+                Center(
+                  child: Expanded(
+                    child: Container(
+                      width: 430,
+                      height: 350,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      // decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(10),
+                      //     gradient: LinearGradient(
+                      //       begin: Alignment.topCenter,
+                      //       end: Alignment.bottomCenter,
+                      //       colors: [
+                      //         Color(0xFFFBFBFE),
+                      //         Color(0xFFECEFFD),
+                      //       ],
+                      //     )),
+                      // decoration: BoxDecoration(
+                      //   gradient:
+                      // ),
+                      child: Stack(
+                        alignment: AlignmentDirectional.topStart,
+                        children: [
+                          Container(
+                            child: SafeArea(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // Container(
+                                  //   margin: EdgeInsets.only(
+                                  //     left: (29 / 390) * _width,
+                                  //     top: (30 / 844) * _height,
+                                  //   ),
+                                  //   child: Image.asset(
+                                  //     'lib/assets/fora-logo.png',
+                                  //     height: (59 / 844) * _height,
+                                  //     width: (111 / 390) * _width,
+                                  //     alignment: Alignment.centerLeft,
+                                  //   ),
+                                  // ),
 
-                                    Container(
-                                      margin:
-                                          EdgeInsets.only(top: 29, left: 29),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            child: Text.rich(
-                                                TextSpan(children: <InlineSpan>[
-                                              TextSpan(
-                                                text: 'Sign in',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 42,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'SfProRounded',
-                                                ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 29, left: 29),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          child: Text.rich(
+                                              TextSpan(children: <InlineSpan>[
+                                            TextSpan(
+                                              text: 'Sign in',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 42,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'SfProRounded',
                                               ),
-                                            ])),
-                                          ),
-                                          // SignUpHereButton(
-                                          //   signUp: false,
-                                          // ),
-                                        ],
-                                      ),
+                                            ),
+                                          ])),
+                                        ),
+                                        // SignUpHereButton(
+                                        //   signUp: false,
+                                        // ),
+                                      ],
                                     ),
+                                  ),
 
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          left: (35 / 390) * _width,
-                                          right: (35 / 390) * _width,
-                                          top: (19 / 844) * _height,
-                                          bottom: (19 / 844) * _height),
-                                      child: Form(
-                                          key: _formKey,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                alignment: Alignment.center,
-                                                // color: Colors.pink,
-                                                height: (72 / 844) * _height,
-                                                child: RegularTextInputNew(
-                                                  labelColor: secondary,
-                                                  textColor: secondary,
-                                                  fillColor: Colors.white,
-                                                  hintTextColor:
-                                                      Color(0x940A1F33),
-                                                  prefixIconColor:
-                                                      Color(0x94192B37),
-                                                  errorBorderColor:
-                                                      Color(0xFFFD7542),
-                                                  label: "Username",
-                                                  hintText: "Username",
-                                                  controller:
-                                                      _usernameController,
-                                                  keyboardType:
-                                                      TextInputType.name,
-                                                ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: (35 / 390) * _width,
+                                        right: (35 / 390) * _width,
+                                        top: (19 / 844) * _height,
+                                        bottom: (19 / 844) * _height),
+                                    child: Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.center,
+                                              // color: Colors.pink,
+                                              height: (72 / 844) * _height,
+                                              child: RegularTextInputNew(
+                                                labelColor: secondary,
+                                                textColor: secondary,
+                                                fillColor: Colors.white,
+                                                hintTextColor:
+                                                    Color(0x940A1F33),
+                                                prefixIconColor:
+                                                    Color(0x94192B37),
+                                                errorBorderColor:
+                                                    Color(0xFFFD7542),
+                                                label: "Username",
+                                                hintText: "Username",
+                                                controller: _usernameController,
+                                                keyboardType:
+                                                    TextInputType.name,
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom:
-                                                        (2 / 844) * _height),
-                                                child: RegularTextInputNew(
-                                                  labelColor: secondary,
-                                                  textColor: secondary,
-                                                  fillColor: Colors.white,
-                                                  hintTextColor:
-                                                      Color(0x940A1F33),
-                                                  prefixIconColor:
-                                                      Color(0x94192B37),
-                                                  errorBorderColor:
-                                                      Color(0xFFFD7542),
-                                                  // password: true,
-                                                  label: "Password",
-                                                  hintText: "Password",
-                                                  protectedText: _obscureText,
-                                                  controller:
-                                                      _passwordController,
-                                                  showPassword: _showPassword,
-                                                ),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  bottom: (2 / 844) * _height),
+                                              child: RegularTextInputNew(
+                                                labelColor: secondary,
+                                                textColor: secondary,
+                                                fillColor: Colors.white,
+                                                hintTextColor:
+                                                    Color(0x940A1F33),
+                                                prefixIconColor:
+                                                    Color(0x94192B37),
+                                                errorBorderColor:
+                                                    Color(0xFFFD7542),
+                                                // password: true,
+                                                label: "Password",
+                                                hintText: "Password",
+                                                protectedText: _obscureText,
+                                                controller: _passwordController,
+                                                showPassword: _showPassword,
                                               ),
-                                              // ForgotPasswordTextButton(),
-                                            ],
-                                          )),
-                                    ),
-                                    MomentumBuilder(
-                                        controllers: [],
-                                        builder: (context, snapshot) {
-                                          var loadingState = false;
-                                          // snapshot<AuthModel>().loginInProgress;
-                                          return SignInButton(
-                                            getStarted: false,
-                                            signIn: true,
-                                            onPressed: _submit,
-                                          );
-                                        }),
-                                    // add space between buttons
-                                    Container(
-                                      height: _height * 0.01,
-                                    ),
-                                    MomentumBuilder(
-                                        controllers: [],
-                                        builder: (context, snapshot) {
-                                          var loadingState = false;
-                                          // snapshot<AuthModel>().loginInProgress;
-                                          return SignUpButton(
-                                            getStarted: false,
-                                            signIn: true,
-                                            onPressed: _signUpSubmit,
-                                          );
-                                        }),
-                                    // add space between buttons
-                                    Container(
-                                      height: _height * 0.01,
-                                    ),
-                                    MomentumBuilder(
-                                        controllers: [],
-                                        builder: (context, snapshot) {
-                                          var loadingState = false;
-                                          // snapshot<AuthModel>().loginInProgress;
-                                          return GuestButton(
-                                            getStarted: false,
-                                            signIn: true,
-                                            onPressed: _guestSubmit,
-                                          );
-                                        })
+                                            ),
+                                            // ForgotPasswordTextButton(),
+                                          ],
+                                        )),
+                                  ),
+                                  MomentumBuilder(
+                                      controllers: [],
+                                      builder: (context, snapshot) {
+                                        var loadingState = false;
+                                        // snapshot<AuthModel>().loginInProgress;
+                                        return SignInButton(
+                                          getStarted: false,
+                                          signIn: true,
+                                          onPressed: _submit,
+                                        );
+                                      }),
+                                  // add space between buttons
+                                  Container(
+                                    height: _height * 0.01,
+                                  ),
+                                  MomentumBuilder(
+                                      controllers: [],
+                                      builder: (context, snapshot) {
+                                        var loadingState = false;
+                                        // snapshot<AuthModel>().loginInProgress;
+                                        return SignUpButton(
+                                          getStarted: false,
+                                          signIn: true,
+                                          onPressed: _signUpSubmit,
+                                        );
+                                      }),
+                                  // add space between buttons
+                                  Container(
+                                    height: _height * 0.01,
+                                  ),
+                                  MomentumBuilder(
+                                      controllers: [],
+                                      builder: (context, snapshot) {
+                                        var loadingState = false;
+                                        // snapshot<AuthModel>().loginInProgress;
+                                        return GuestButton(
+                                          getStarted: false,
+                                          signIn: true,
+                                          onPressed: _guestSubmit,
+                                        );
+                                      })
 
-                                    // ListView(
-                                    //   scrollDirection: Axis.horizontal,
-                                    // )
-                                  ],
-                                ),
+                                  // ListView(
+                                  //   scrollDirection: Axis.horizontal,
+                                  // )
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         });

@@ -3,7 +3,9 @@ import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart
 import 'package:world_cup_system_frontend_web/data_models/current-user-type.dart';
 import 'package:world_cup_system_frontend_web/models/match-model.dart';
 
-class TicketModel extends MomentumModel<TicketController> {
+import '../controllers/vip-ticket-controller.dart';
+
+class VipTicketModel extends MomentumModel<VipTicketController> {
   // MatchModel ticketMatch;
   final seatNo;
   final price;
@@ -12,10 +14,9 @@ class TicketModel extends MomentumModel<TicketController> {
   final userTickets;
   final userVipTickets;
   final ticketId;
-  TicketModel(TicketController controller,
+  VipTicketModel(VipTicketController controller,
       {this.userTickets,
       this.userVipTickets,
-      // required this.ticketMatch,
       this.seatNo,
       this.price,
       this.ticketOwner,
@@ -32,7 +33,7 @@ class TicketModel extends MomentumModel<TicketController> {
       bool? isVip,
       CurrentUserType? ticketOwner,
       int? ticketId}) {
-    TicketModel(
+    VipTicketModel(
       controller,
       // ticketMatch: ticketMatch ?? this.ticketMatch,
       seatNo: seatNo ?? this.seatNo,

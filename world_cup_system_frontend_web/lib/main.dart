@@ -9,6 +9,7 @@ import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/vip-ticket-controller.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
@@ -44,7 +45,8 @@ Momentum momentum() {
       AuthController(),
       MatchController(),
       TicketController(),
-      StadiumController()
+      StadiumController(),
+      VipTicketController()
     ],
     child: MyApp(),
     persistSave: (context, key, value) async {

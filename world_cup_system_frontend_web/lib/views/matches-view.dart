@@ -21,6 +21,12 @@ String dropDownValue = 'circular';
 var shapeItems = ['circular', 'rectangular'];
 
 class _MatchViewState extends MomentumState<MatchView> {
+  void initMomentumState() {
+    var matches = Momentum.controller<MatchController>(context);
+    matches.getMatches(context);
+    super.initMomentumState();
+  }
+
   final _nameController = TextEditingController();
   final _seatCountController = TextEditingController();
 
@@ -210,35 +216,44 @@ class _MatchViewState extends MomentumState<MatchView> {
                 : Container(),
             body: Center(
               child: Container(
-                width: _width * 0.7,
+                margin: EdgeInsets.all(5),
                 child: ListView(
                   // shrinkWrap: true,
+
                   children: [
-                    GridView.builder(
-                      itemBuilder: (context, index) => Match(
-                        firstTeam: matchModel.matcheslist[index].firstTeam.name,
-                        secondTeam:
-                            matchModel.matcheslist[index].secondTeam.name,
-                        stadium: matchModel.matcheslist[index].stadium.name,
-                        dateTime: matchModel.matcheslist[index].dateTime,
-                        seatsLeft: matchModel.matcheslist[index].seatsLeft,
-                        firstLinesman:
-                            matchModel.matcheslist[index].firstLinesman,
-                        secondLinesman:
-                            matchModel.matcheslist[index].secondLinesman,
-                        mainReferee: matchModel.matcheslist[index].mainReferee,
-                        role: role,
-                      ),
-                      shrinkWrap: true,
-                      itemCount: matchModel.matcheslist != null
-                          ? matchModel.matcheslist.length
-                          : 0,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        mainAxisExtent: _height * 0.25,
-                        mainAxisSpacing: 5,
-                      ),
-                    ),
+                    Container(
+                        margin: EdgeInsets.all(10),
+                        child: Text(
+                          "All Matches ⚽",
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: primary),
+                        )),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => Match(
+                              firstTeam:
+                                  matchModel.matcheslist[index].firstTeam.name,
+                              secondTeam:
+                                  matchModel.matcheslist[index].secondTeam.name,
+                              stadium:
+                                  matchModel.matcheslist[index].stadium.name,
+                              dateTime: matchModel.matcheslist[index].dateTime,
+                              seatsLeft:
+                                  matchModel.matcheslist[index].seatsLeft,
+                              firstLinesman:
+                                  matchModel.matcheslist[index].firstLinesman,
+                              secondLinesman:
+                                  matchModel.matcheslist[index].secondLinesman,
+                              mainReferee:
+                                  matchModel.matcheslist[index].mainReferee,
+                              role: role,
+                            ),
+                        shrinkWrap: true,
+                        itemCount: matchModel.matcheslist != null
+                            ? matchModel.matcheslist.length
+                            : 0),
                   ],
                 ),
               ),

@@ -1,8 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'dart:async';
-import 'dart:io';
-
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -36,7 +33,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
   initMomentumState() async {
     var auth = Momentum.controller<AuthController>(context).model;
     var stadium = Momentum.controller<StadiumController>(context);
-    var matches = Momentum.controller<MatchController>(context);
+
     var role = "Guest";
     if (auth.currentUser != null) {
       if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
@@ -95,35 +92,11 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
           }
         });
       });
-    await matches.getMatches(context);
+    // await matches.getMatches(context);
 
     await stadium.getStadiums(context);
 
     super.initMomentumState();
-  }
-
-  late StreamSubscription _connectivitySubscription;
-  bool? _isConnectionSuccessful;
-
-  Future<void> _tryConnection() async {
-    try {
-      final response = await InternetAddress.lookup('www.google.com');
-
-      setState(() {
-        _isConnectionSuccessful = response.isNotEmpty;
-      });
-    } on SocketException catch (e) {
-      print(e);
-      setState(() {
-        _isConnectionSuccessful = false;
-      });
-    }
-  }
-
-  dispose() {
-    super.dispose();
-    _tabController.dispose();
-    _connectivitySubscription.cancel();
   }
 
   @override
@@ -292,52 +265,45 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                     indicatorColor: secondary,
                                   )),
               ),
-              body: GestureDetector(
-                onTap: () {
-                  if (_isConnectionSuccessful == false) {
-                    _tryConnection();
-                  }
-                },
-                child: Stack(
-                  children: [
-                    role == 'USER'
-                        ? TabBarView(
-                            controller: _tabController,
-                            children: [
-                              MatchView(),
-                              TicketsView(),
-                              MatchView(),
-                            ],
-                          )
-                        : (role == 'MANAGER')
-                            ? TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  MatchView(),
-                                  TicketsView(),
-                                  StadiumView(),
-                                  MatchView(),
-                                ],
-                              )
-                            : (role == 'ADMIN')
-                                ? TabBarView(
-                                    controller: _tabController,
-                                    children: [
-                                      MatchView(),
-                                      TicketsView(),
-                                      StadiumView(), //stadiums
-                                      MatchView(), //users
-                                      MatchView(), //profile
-                                    ],
-                                  )
-                                : TabBarView(
-                                    controller: _tabController,
-                                    children: [
-                                      MatchView(),
-                                    ],
-                                  ),
-                  ],
-                ),
+              body: Stack(
+                children: [
+                  role == 'USER'
+                      ? TabBarView(
+                          controller: _tabController,
+                          children: [
+                            MatchView(),
+                            TicketsView(),
+                            MatchView(),
+                          ],
+                        )
+                      : (role == 'MANAGER')
+                          ? TabBarView(
+                              controller: _tabController,
+                              children: [
+                                MatchView(),
+                                TicketsView(),
+                                StadiumView(),
+                                MatchView(),
+                              ],
+                            )
+                          : (role == 'ADMIN')
+                              ? TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    MatchView(),
+                                    TicketsView(),
+                                    StadiumView(), //stadiums
+                                    MatchView(), //users
+                                    MatchView(), //profile
+                                  ],
+                                )
+                              : TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    MatchView(),
+                                  ],
+                                ),
+                ],
               ),
               // getBodymodel(_selectedIndex),
               // widgetOptions.elementAt(_selectedIndex),

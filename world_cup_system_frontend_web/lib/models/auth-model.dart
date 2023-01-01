@@ -24,9 +24,11 @@ class AuthModel extends MomentumModel<AuthController> {
   final verified;
   final bool loading;
   final String status;
+  final id;
 
   AuthModel(
     AuthController controller, {
+    this.id,
     required this.email,
     this.changePasswordTempToken,
     this.loginInProgress = false,
@@ -62,6 +64,7 @@ class AuthModel extends MomentumModel<AuthController> {
     final tempToken,
     final verified,
     bool? loading,
+    final id,
   }) {
     AuthModel(
       controller,
@@ -83,6 +86,7 @@ class AuthModel extends MomentumModel<AuthController> {
       verified: verified ?? this.verified,
       tempToken: tempToken ?? this.tempToken,
       loading: loading ?? this.loading,
+      id: id ?? this.id,
     ).updateMomentum();
   }
 }

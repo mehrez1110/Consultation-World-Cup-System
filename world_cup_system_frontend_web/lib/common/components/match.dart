@@ -384,13 +384,23 @@ class _MatchState extends State<Match> {
     double _height = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
+          border: Border.all(color: secondary, width: 2),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(77, 50, 52, 45),
+              spreadRadius: 0,
+              blurRadius: 34,
+              offset: Offset(0, 10),
+            )
+          ],
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-            Color(0xFFFBFBFE),
-            Color(0xFFECEFFD),
-          ])),
+                Color(0xFFFBFBFE),
+                Color(0xFFECEFFD),
+              ])),
       margin: EdgeInsets.only(
         top: _height * 0.01,
         bottom: _height * 0.01,
@@ -479,7 +489,7 @@ class _MatchState extends State<Match> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Seats left: ',
+              'Capacity: ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
