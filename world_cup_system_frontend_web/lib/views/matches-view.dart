@@ -24,6 +24,7 @@ class _MatchViewState extends MomentumState<MatchView> {
   void initMomentumState() {
     var matches = Momentum.controller<MatchController>(context);
     matches.getMatches(context);
+    matches.getTeams(context);
     super.initMomentumState();
   }
 
