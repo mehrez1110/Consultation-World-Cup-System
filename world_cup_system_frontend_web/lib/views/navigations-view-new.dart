@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
+import 'package:world_cup_system_frontend_web/views/stadium-view.dart';
 import 'package:world_cup_system_frontend_web/views/tickets-view.dart';
 
 class NavigationBarViewNew extends StatefulWidget {
@@ -30,8 +33,10 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
   }
 
   @override
-  void initMomentumState() {
+  initMomentumState() async {
     var auth = Momentum.controller<AuthController>(context).model;
+    var stadium = Momentum.controller<StadiumController>(context);
+    var matches = Momentum.controller<MatchController>(context);
     var role = "Guest";
     if (auth.currentUser != null) {
       if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
@@ -90,8 +95,10 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
           }
         });
       });
+    await matches.getMatches(context);
 
-    print("object");
+    await stadium.getStadiums(context);
+
     super.initMomentumState();
   }
 
@@ -125,7 +132,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
     double _height = MediaQuery.of(context).size.height;
 
     return MomentumBuilder(
-        controllers: [AuthController],
+        controllers: [AuthController, StadiumController, MatchController],
         builder: (context, snapshot) {
           // var authModel = Momentum.controller<AuthController>(context).model;
           var auth = Momentum.controller<AuthController>(context).model;
@@ -308,7 +315,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                 children: [
                                   MatchView(),
                                   TicketsView(),
-                                  MatchView(),
+                                  StadiumView(),
                                   MatchView(),
                                 ],
                               )
@@ -318,7 +325,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                     children: [
                                       MatchView(),
                                       TicketsView(),
-                                      MatchView(), //stadiums
+                                      StadiumView(), //stadiums
                                       MatchView(), //users
                                       MatchView(), //profile
                                     ],

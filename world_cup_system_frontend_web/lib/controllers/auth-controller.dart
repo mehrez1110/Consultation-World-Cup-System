@@ -1,18 +1,13 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
-import 'dart:io';
-import 'dart:js';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:momentum/momentum.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/data_models/current-user-type.dart';
 import 'package:world_cup_system_frontend_web/models/auth-model.dart';
-import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
 class AuthController extends MomentumController<AuthModel> {
   @override

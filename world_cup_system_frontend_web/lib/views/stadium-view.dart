@@ -1,30 +1,44 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
-import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
+import 'package:world_cup_system_frontend_web/common/components/stadium-widget.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
+import 'package:world_cup_system_frontend_web/models/stadium-model.dart';
+import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
-import '../common/components/match.dart';
+import '../common/components/regular_text_input_new.dart';
 import '../controllers/match-controller.dart';
 import '../models/match-model.dart';
+import '../common/components/match.dart';
 
-class MatchView extends StatefulWidget {
-  const MatchView({Key? key}) : super(key: key);
+class StadiumView extends StatefulWidget {
+  const StadiumView({Key? key}) : super(key: key);
 
   @override
-  State<MatchView> createState() => _MatchViewState();
+  State<StadiumView> createState() => _StadiumViewState();
 }
 
 String dropDownValue = 'circular';
 var shapeItems = ['circular', 'rectangular'];
 
-class _MatchViewState extends MomentumState<MatchView> {
+class _StadiumViewState extends MomentumState<StadiumView> {
   final _nameController = TextEditingController();
   final _seatCountController = TextEditingController();
 
-  addNewMatch(BuildContext context) async {
+  Future<void> _addStadium(context) async {
+    var stadium = Momentum.controller<StadiumController>(context);
+    await stadium.addStadium(context, _nameController.text, dropDownValue,
+        int.parse(_seatCountController.text));
+  }
+
+  addNewStadium(BuildContext context) async {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
@@ -156,7 +170,7 @@ class _MatchViewState extends MomentumState<MatchView> {
         actions: [
           TextButton(
             onPressed: () {
-              // _addStadium(context);
+              _addStadium(context);
               Navigator.pop(context);
             },
             child: Text(
@@ -175,72 +189,45 @@ class _MatchViewState extends MomentumState<MatchView> {
 
   Widget build(BuildContext context) {
     //screen width and height
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     //
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
     //
     return MomentumBuilder(
-        controllers: [MatchController, AuthController],
+        controllers: [MatchController, AuthController, StadiumController],
         builder: (context, snapshot) {
-          var auth = Momentum.controller<AuthController>(context).model;
-          var role = "Guest";
-          if (auth.currentUser != null) {
-            if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
-              role = "ADMIN";
-            } else if (auth.currentUser.role
-                .any((role) => role.name == "MANAGER")) {
-              role = "MANAGER";
-            } else if (auth.currentUser.role
-                .any((role) => role.name == "USER")) {
-              role = "USER";
-            }
-          }
-          var matchModel = Momentum.controller<MatchController>(context).model;
+          var stadiumModel =
+              Momentum.controller<StadiumController>(context).model;
+          // var stadiumModel = snapshot<StadiumModel>();
           return Scaffold(
-            floatingActionButton: role == "MANAGER" || role == "ADMIN"
-                ? FloatingActionButton(
-                    child: const Icon(Icons.add),
-                    backgroundColor: primary,
-                    onPressed: () {
-                      addNewMatch(context);
-                    },
-                  )
-                : Container(),
-            body: Center(
-              child: Container(
-                width: _width * 0.7,
-                child: ListView(
-                  // shrinkWrap: true,
-                  children: [
-                    GridView.builder(
-                      itemBuilder: (context, index) => Match(
-                        firstTeam: matchModel.matcheslist[index].firstTeam.name,
-                        secondTeam:
-                            matchModel.matcheslist[index].secondTeam.name,
-                        stadium: matchModel.matcheslist[index].stadium.name,
-                        dateTime: matchModel.matcheslist[index].dateTime,
-                        seatsLeft: matchModel.matcheslist[index].seatsLeft,
-                        firstLinesman:
-                            matchModel.matcheslist[index].firstLinesman,
-                        secondLinesman:
-                            matchModel.matcheslist[index].secondLinesman,
-                        mainReferee: matchModel.matcheslist[index].mainReferee,
-                        role: role,
-                      ),
-                      shrinkWrap: true,
-                      itemCount: matchModel.matcheslist != null
-                          ? matchModel.matcheslist.length
-                          : 0,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        mainAxisExtent: _height * 0.25,
-                        mainAxisSpacing: 5,
-                      ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                addNewStadium(context);
+              },
+              child: const Icon(Icons.add),
+              backgroundColor: primary,
+            ),
+            body: Container(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  GridView.builder(
+                    itemBuilder: (context, index) => StadiumWidget(
+                      id: stadiumModel.stadiumslist[index].id,
+                      name: stadiumModel.stadiumslist[index].name,
+                      shape: stadiumModel.stadiumslist[index].shape,
+                      seatsCount: stadiumModel.stadiumslist[index].seatsCount,
+                      vipLounge: stadiumModel.stadiumslist[index].vipLounge,
                     ),
-                  ],
-                ),
+                    shrinkWrap: true,
+                    itemCount: stadiumModel.stadiumslist.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                    ),
+                  ),
+                ],
               ),
             ),
           );

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:momentum/momentum.dart';
 import 'package:string_capitalize/string_capitalize.dart';
+import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 
-class Match extends StatelessWidget {
+class Match extends StatefulWidget {
+  final id;
   final firstTeam;
   final secondTeam;
   final stadium;
@@ -16,6 +20,7 @@ class Match extends StatelessWidget {
 
   const Match(
       {Key? key,
+      this.id,
       this.firstTeam = "Egypt",
       this.secondTeam = "Saudi Arabia",
       this.stadium = "Suez stadium",
@@ -27,13 +32,20 @@ class Match extends StatelessWidget {
       this.role = "user"})
       : super(key: key);
 
-  showItemDialog(BuildContext context) async {
+  @override
+  State<Match> createState() => _MatchState();
+}
+
+class _MatchState extends State<Match> {
+  bookDialog(BuildContext context) async {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    var countryCode1 = mapedCountries.keys
-        .firstWhere((k) => mapedCountries[k] == firstTeam, orElse: () => "EG");
-    var countryCode2 = mapedCountries.keys
-        .firstWhere((k) => mapedCountries[k] == secondTeam, orElse: () => "EG");
+    var countryCode1 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.firstTeam,
+        orElse: () => "EG");
+    var countryCode2 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.secondTeam,
+        orElse: () => "EG");
     return showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -73,7 +85,7 @@ class Match extends StatelessWidget {
                               height: _height * 0.01,
                             ),
                             Text(
-                              firstTeam,
+                              widget.firstTeam,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: primary,
@@ -81,10 +93,36 @@ class Match extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Image.asset(
-                          "lib/assets/al-bayt.webp",
-                          height: _height * 0.3,
-                          width: _width * 0.3,
+                        Column(
+                          children: [
+                            Image.asset(
+                              "lib/assets/" +
+                                  widget.stadium.replaceAll(' ', '') +
+                                  ".webp",
+                              height: _height * 0.3,
+                              width: _width * 0.3,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.stadium),
+                                Text(
+                                  widget.stadium,
+                                  style: const TextStyle(fontSize: 22),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.calendar_month_outlined),
+                                Text(
+                                  widget.dateTime,
+                                  style: const TextStyle(fontSize: 22),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                         Column(
                           children: [
@@ -98,7 +136,7 @@ class Match extends StatelessWidget {
                               height: _height * 0.01,
                             ),
                             Text(
-                              secondTeam,
+                              widget.secondTeam,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: primary,
@@ -106,26 +144,6 @@ class Match extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.stadium),
-                        Text(
-                          stadium,
-                          style: const TextStyle(fontSize: 22),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.calendar_month_outlined),
-                        Text(
-                          dateTime,
-                          style: const TextStyle(fontSize: 22),
-                        )
                       ],
                     ),
                     Container(
@@ -167,12 +185,200 @@ class Match extends StatelessWidget {
     );
   }
 
+  final _homeTeamController = TextEditingController();
+  final _awayTeamController = TextEditingController();
+  final _stadiumController = TextEditingController();
+  final _dateTimeController = TextEditingController();
+  final _mainRefereeController = TextEditingController();
+  final _firstLinesmanController = TextEditingController();
+  final _secondLinesmanController = TextEditingController();
+
+  editMatch(BuildContext context) async {
+    var matches = Momentum.controller<MatchController>(context).model;
+
+    _homeTeamController.text = widget.firstTeam;
+    _awayTeamController.text = widget.secondTeam;
+    _stadiumController.text = widget.stadium;
+    _dateTimeController.text = widget.dateTime;
+    _mainRefereeController.text = widget.mainReferee;
+    _firstLinesmanController.text = widget.firstLinesman;
+    _secondLinesmanController.text = widget.secondLinesman;
+
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+
+    var countryCode1 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.firstTeam,
+        orElse: () => "EG");
+    var countryCode2 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.secondTeam,
+        orElse: () => "EG");
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.edit, color: primary, size: 30),
+              Text(
+                "Edit Match ",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: primary, fontSize: 22),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Container(
+              width: _width * 0.4,
+              height: _height * 0.7,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Home Team",
+                      controller: _homeTeamController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Away Team",
+                      controller: _awayTeamController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Stadium",
+                      controller: _stadiumController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Date & Time",
+                      controller: _dateTimeController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Main Referee",
+                      controller: _mainRefereeController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "First Linesman",
+                      controller: _firstLinesmanController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    RegularTextInputNew(
+                      labelColor: secondary,
+                      textColor: secondary,
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      label: "Second Linesman",
+                      controller: _secondLinesmanController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    Container(
+                      width: _width * 0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            child: const Text('Cancel',
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.grey)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFFEC310),
+                            ),
+                            onPressed: () {
+                              // update match with in list with certain id match
+                              // fel updateeee bta3et match ma ana law ghayart esm el team hageb el id bta3et el team mnen wala hab3ato ezay fe update
+
+                              matches.matcheslist.forEach((element) {
+                                if (element.id == widget.id) {
+                                  element.homeTeam = _homeTeamController.text;
+                                  element.awayTeam = _awayTeamController.text;
+                                  element.stadium = _stadiumController.text;
+                                  element.dateTime = _dateTimeController.text;
+                                  element.mainReferee =
+                                      _mainRefereeController.text;
+                                  element.firstLinesman =
+                                      _firstLinesmanController.text;
+                                  element.secondLinesman =
+                                      _secondLinesmanController.text;
+                                }
+                              });
+
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Update',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 22),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var countryCode1 = mapedCountries.keys
-        .firstWhere((k) => mapedCountries[k] == firstTeam, orElse: () => "EG");
-    var countryCode2 = mapedCountries.keys
-        .firstWhere((k) => mapedCountries[k] == secondTeam, orElse: () => "EG");
+    var countryCode1 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.firstTeam,
+        orElse: () => "EG");
+    var countryCode2 = mapedCountries.keys.firstWhere(
+        (k) => mapedCountries[k] == widget.secondTeam,
+        orElse: () => "EG");
 
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
@@ -208,7 +414,7 @@ class Match extends StatelessWidget {
                   width: _width * 0.01,
                 ),
                 Text(
-                  firstTeam,
+                  widget.firstTeam,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -232,7 +438,7 @@ class Match extends StatelessWidget {
                   width: _width * 0.01,
                 ),
                 Text(
-                  secondTeam,
+                  widget.secondTeam,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -242,7 +448,7 @@ class Match extends StatelessWidget {
               children: [
                 Icon(Icons.stadium),
                 Text(
-                  stadium,
+                  widget.stadium,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -255,7 +461,7 @@ class Match extends StatelessWidget {
               ),
               onPressed: () {
                 // ignore: void_checks
-                return showItemDialog(context);
+                return bookDialog(context);
               },
               child: Text(
                 'Book',
@@ -279,18 +485,38 @@ class Match extends StatelessWidget {
               ),
             ),
             Text(
-              seatsLeft.toString(),
+              widget.seatsLeft.toString(),
               style: TextStyle(fontWeight: FontWeight.bold, color: primary),
             ),
             SizedBox(
               width: _width * 0.1,
             ),
             Text(
-              dateTime,
+              widget.dateTime,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            )
+            ),
+            SizedBox(
+              width: _width * 0.1,
+            ),
+            widget.role == "MANAGER" || widget.role == "ADMIN"
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFEC310),
+                    ),
+                    onPressed: () {
+                      // ignore: void_checks
+                      return editMatch(context);
+                    },
+                    child: Text(
+                      'Edit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ]),

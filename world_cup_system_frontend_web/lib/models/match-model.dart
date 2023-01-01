@@ -2,6 +2,7 @@
 import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/data_models/current-user-type.dart';
+import 'package:world_cup_system_frontend_web/data_models/team.dart';
 
 import '../controllers/match-controller.dart';
 
@@ -10,6 +11,7 @@ import '../controllers/match-controller.dart';
 // These are simply models which hold data for a view. The actions/events are still under the domain of a controller.
 
 class MatchModel extends MomentumModel<MatchController> {
+  final id;
   final firstTeam;
   final secondTeam;
   final stadium;
@@ -18,29 +20,35 @@ class MatchModel extends MomentumModel<MatchController> {
   final firstLinesman;
   final secondLinesman;
   final seatsLeft;
+  final matcheslist;
 
   MatchModel(MatchController controller,
       {this.firstTeam,
+      this.id,
       this.secondTeam,
       this.stadium,
       this.dateTime,
       this.mainReferee,
       this.firstLinesman,
       this.secondLinesman,
-      this.seatsLeft})
+      this.seatsLeft,
+      this.matcheslist})
       : super(controller);
 
   @override
   void update(
-      {String? firstTeam,
-      String? secondTeam,
+      {id,
+      firstTeam,
+      secondTeam,
       String? stadium,
       DateTime? dateTime,
       String? mainReferee,
       String? firstLinesman,
       String? secondLinesman,
-      int? seatsLeft}) {
+      int? seatsLeft,
+      matcheslist}) {
     MatchModel(controller,
+            id: id ?? this.id,
             firstTeam: firstTeam ?? this.firstTeam,
             secondTeam: secondTeam ?? this.secondTeam,
             stadium: stadium ?? this.stadium,
@@ -48,7 +56,8 @@ class MatchModel extends MomentumModel<MatchController> {
             mainReferee: mainReferee ?? this.mainReferee,
             firstLinesman: firstLinesman ?? this.firstLinesman,
             secondLinesman: secondLinesman ?? this.secondLinesman,
-            seatsLeft: seatsLeft ?? this.seatsLeft)
+            seatsLeft: seatsLeft ?? this.seatsLeft,
+            matcheslist: matcheslist ?? this.matcheslist)
         .updateMomentum();
   }
 }

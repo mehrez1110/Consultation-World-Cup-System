@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
@@ -39,7 +40,12 @@ Future<void> main() async {
 
 Momentum momentum() {
   return Momentum(
-    controllers: [AuthController(), MatchController(), TicketController()],
+    controllers: [
+      AuthController(),
+      MatchController(),
+      TicketController(),
+      StadiumController()
+    ],
     child: MyApp(),
     persistSave: (context, key, value) async {
       var sharedPref = await SharedPreferences.getInstance();

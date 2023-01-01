@@ -10,6 +10,7 @@ import 'package:world_cup_system_frontend_web/common/components/signup-button.da
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/data_models/current-user-type.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
 import '../common/components/regular_text_input_new.dart';

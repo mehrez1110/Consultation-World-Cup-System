@@ -265,3 +265,14 @@ const mapedCountries = {
   "ZM": "Zambia",
   "ZW": "Zimbabwe"
 };
+
+const List<String> stadiumNames = [
+  "Al Bayt Stadium",
+  "Lusail Stadium",
+  "Ahmad Bin Ali Stadium",
+  "Al Janoub Stadium",
+  "Al Thumama Stadium",
+  "Education City Stadium",
+  "Khalifa International Stadium",
+  "Stadium 974"
+];
