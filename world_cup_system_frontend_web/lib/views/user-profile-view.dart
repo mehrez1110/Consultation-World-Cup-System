@@ -268,16 +268,15 @@ class _UserProfileState extends State<UserProfile> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: secondary,
-                                    width: (1 / 390) * _width),
+                                    color: primary, width: (1 / 390) * _width),
                                 borderRadius:
                                     BorderRadius.circular((43 / 390) * _width),
                               ),
                               child: Text(
                                 'Log out',
                                 style: TextStyle(
-                                    color: secondary,
-                                    fontWeight: FontWeight.w500,
+                                    color: primary,
+                                    fontWeight: FontWeight.w700,
                                     fontSize: (16 / 844) * _height,
                                     fontFamily: 'sfprorounded'),
                               ),
