@@ -36,11 +36,21 @@ class _TicketsViewState extends MomentumState<TicketsView> {
           var model = snapshot<TicketModel>();
           var model1 = snapshot<VipTicketModel>();
           return Scaffold(
-            body: Center(
+            body: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Color(0xFFFBFBFE),
+                    Color(0xFFECEFFD),
+                  ])),
               child: Container(
-                margin: EdgeInsets.all(5),
-                // width: _width * 0.7,
-
+                margin: EdgeInsets.only(
+                  top: (40 / 840) * _height,
+                  left: (28 / 390) * _width,
+                  right: (28 / 390) * _width,
+                ),
                 child: ListView(
                   children: [
                     Container(
@@ -52,15 +62,39 @@ class _TicketsViewState extends MomentumState<TicketsView> {
                               fontWeight: FontWeight.bold,
                               color: primary),
                         )),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: (model1.userTickets == null)
-                            ? 0
-                            : model1.userTickets.length,
-                        itemBuilder: (context, index) {
-                          return model1.userTickets[index];
-                        }),
+                    (model1.userTickets.length != 0)
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: (model1.userTickets == null)
+                                ? 0
+                                : model1.userTickets.length,
+                            itemBuilder: (context, index) {
+                              return model1.userTickets[index];
+                            })
+                        : Center(
+                            child: Column(
+                            children: [
+                              Text(
+                                "👑",
+                                style: TextStyle(fontSize: 70),
+                              ),
+                              Text(
+                                "Still no vip reservations",
+                                style: TextStyle(
+                                    color: primary,
+                                    fontWeight: FontWeight.w700),
+                              )
+                            ],
+                          )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Divider(
+                        thickness: 2,
+                        height: (40 / 840) * _height,
+                        color: primary,
+                      ),
+                    ),
                     Container(
                         margin: EdgeInsets.all(10),
                         child: Text(
@@ -70,15 +104,31 @@ class _TicketsViewState extends MomentumState<TicketsView> {
                               fontWeight: FontWeight.bold,
                               color: primary),
                         )),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: (model.userTickets == null)
-                            ? 0
-                            : model.userTickets.length,
-                        itemBuilder: (context, index) {
-                          return model.userTickets[index];
-                        }),
+                    (model.userTickets.length != 0)
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: (model.userTickets == null)
+                                ? 0
+                                : model.userTickets.length,
+                            itemBuilder: (context, index) {
+                              return model.userTickets[index];
+                            })
+                        : Center(
+                            child: Column(
+                            children: [
+                              Text(
+                                "🙅🏻‍♂️",
+                                style: TextStyle(fontSize: 70),
+                              ),
+                              Text(
+                                "Still no reservations",
+                                style: TextStyle(
+                                    color: primary,
+                                    fontWeight: FontWeight.w700),
+                              )
+                            ],
+                          )),
                   ],
                 ),
               ),

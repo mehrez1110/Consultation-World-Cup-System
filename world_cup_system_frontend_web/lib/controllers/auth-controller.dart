@@ -57,8 +57,7 @@ class AuthController extends MomentumController<AuthModel> {
         // model.update(
         //   loginInProgress: false,
         // );
-        if (model.currentUser!.status == "pending" ||
-            model.currentUser!.status == "rejected") {
+        if (model.currentUser!.status == "rejected") {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(

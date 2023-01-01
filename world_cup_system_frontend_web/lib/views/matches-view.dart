@@ -215,9 +215,21 @@ class _MatchViewState extends MomentumState<MatchView> {
                     },
                   )
                 : Container(),
-            body: Center(
+            body: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Color(0xFFFBFBFE),
+                    Color(0xFFECEFFD),
+                  ])),
               child: Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.only(
+                  top: (40 / 840) * _height,
+                  left: (28 / 390) * _width,
+                  right: (28 / 390) * _width,
+                ),
                 child: ListView(
                   // shrinkWrap: true,
 
