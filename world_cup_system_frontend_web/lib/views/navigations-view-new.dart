@@ -12,6 +12,7 @@ import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
 import 'package:world_cup_system_frontend_web/views/stadium-view.dart';
 import 'package:world_cup_system_frontend_web/views/tickets-view.dart';
+import 'package:world_cup_system_frontend_web/views/user-profile-view.dart';
 
 class NavigationBarViewNew extends StatefulWidget {
   const NavigationBarViewNew({
@@ -273,7 +274,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                           children: [
                             MatchView(),
                             TicketsView(),
-                            MatchView(),
+                            UserProfile(),
                           ],
                         )
                       : (role == 'MANAGER')
@@ -283,7 +284,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                 MatchView(),
                                 TicketsView(),
                                 StadiumView(),
-                                MatchView(),
+                                UserProfile(),
                               ],
                             )
                           : (role == 'ADMIN')
@@ -294,7 +295,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                     TicketsView(),
                                     StadiumView(), //stadiums
                                     MatchView(), //users
-                                    MatchView(), //profile
+                                    UserProfile(), //profile
                                   ],
                                 )
                               : TabBarView(
