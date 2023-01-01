@@ -21,6 +21,8 @@ class MatchModel extends MomentumModel<MatchController> {
   final secondLinesman;
   final seatsLeft;
   final matcheslist;
+  final teamsList;
+  final teamNames;
 
   MatchModel(MatchController controller,
       {this.firstTeam,
@@ -32,7 +34,9 @@ class MatchModel extends MomentumModel<MatchController> {
       this.firstLinesman,
       this.secondLinesman,
       this.seatsLeft,
-      this.matcheslist})
+      this.matcheslist,
+      this.teamNames,
+      this.teamsList})
       : super(controller);
 
   @override
@@ -46,7 +50,9 @@ class MatchModel extends MomentumModel<MatchController> {
       String? firstLinesman,
       String? secondLinesman,
       int? seatsLeft,
-      matcheslist}) {
+      matcheslist,
+      teamsList,
+      teamNames}) {
     MatchModel(controller,
             id: id ?? this.id,
             firstTeam: firstTeam ?? this.firstTeam,
@@ -57,7 +63,9 @@ class MatchModel extends MomentumModel<MatchController> {
             firstLinesman: firstLinesman ?? this.firstLinesman,
             secondLinesman: secondLinesman ?? this.secondLinesman,
             seatsLeft: seatsLeft ?? this.seatsLeft,
-            matcheslist: matcheslist ?? this.matcheslist)
+            matcheslist: matcheslist ?? this.matcheslist,
+            teamsList: teamsList ?? this.teamsList,
+            teamNames: teamNames ?? this.teamNames)
         .updateMomentum();
   }
 }
