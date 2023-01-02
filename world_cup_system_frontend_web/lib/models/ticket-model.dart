@@ -10,11 +10,13 @@ class TicketModel extends MomentumModel<TicketController> {
 
   final ticketOwner;
   final userTickets;
+  final matchTickets;
   final userVipTickets;
   final ticketId;
   TicketModel(TicketController controller,
       {this.userTickets,
       this.userVipTickets,
+      this.matchTickets,
       // required this.ticketMatch,
       this.seatNo,
       this.price,
@@ -27,6 +29,7 @@ class TicketModel extends MomentumModel<TicketController> {
       {
       // MatchModel? ticketMatch,
       List? userTickets,
+      final matchTickets,
       List? userVipTickets,
       int? price,
       bool? isVip,
@@ -35,6 +38,7 @@ class TicketModel extends MomentumModel<TicketController> {
     TicketModel(
       controller,
       // ticketMatch: ticketMatch ?? this.ticketMatch,
+      matchTickets: matchTickets ?? this.matchTickets,
       seatNo: seatNo ?? this.seatNo,
       userTickets: userTickets ?? this.userTickets,
       userVipTickets: userVipTickets ?? this.userVipTickets,

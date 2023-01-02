@@ -55,17 +55,18 @@ class _SeatsComponentState extends State<SeatsComponent> {
     double _height = MediaQuery.of(context).size.height;
     return TextButton(
       onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: primary,
-            insetPadding: EdgeInsets.all(0),
-            content: NewCreditCardView(
-                ticketId: widget.id,
-                matchId: widget.matchId,
-                price: widget.price),
-          ),
-        );
+        if (widget.status == "available")
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: primary,
+              insetPadding: EdgeInsets.all(0),
+              content: NewCreditCardView(
+                  ticketId: widget.id,
+                  matchId: widget.matchId,
+                  price: widget.price),
+            ),
+          );
       },
       child: Container(
           height: 0.05 * _height,

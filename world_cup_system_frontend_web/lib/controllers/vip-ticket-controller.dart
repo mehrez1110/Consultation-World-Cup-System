@@ -46,6 +46,9 @@ class VipTicketController extends MomentumController<VipTicketModel> {
         print(jsonResponse);
         for (var responseItem in jsonResponse) {
           final ticket = Ticket(
+            price: responseItem['price'],
+            isVip: true,
+            id: responseItem["id"],
             firstTeam: responseItem["ticketMatch"]["homeTeam"]["name"],
             secondTeam: responseItem["ticketMatch"]["awayTeam"]["name"],
             stadium: responseItem["ticketMatch"]["matchStadium"]["name"],
@@ -151,7 +154,7 @@ class VipTicketController extends MomentumController<VipTicketModel> {
 
   Future<void> bookVipTicket(ticketId, matchId, userId, context) async {
     var url = Uri.http(STAGING_URL, "/api/vip-tickets/user-buy-vip-ticket/",
-        {"userId": userId.toString(), "id": ticketId.toString()});
+        {"userId": userId.toString(), "ticketId": ticketId.toString()});
 
     try {
       var response = await http.get(
@@ -187,7 +190,50 @@ class VipTicketController extends MomentumController<VipTicketModel> {
         );
       }
     } catch (e) {
-      debugPrint('Caught error in bookTicket: ${e.toString()}');
+      debugPrint('Caught error in book vip Ticket: ${e.toString()}');
+    }
+  }
+
+  Future<void> refundVipTicket(ticketId, userId, context) async {
+    var url = Uri.http(STAGING_URL, "/api/vip-tickets/user-refund-vip-ticket/",
+        {"userId": userId.toString(), "ticketId": ticketId.toString()});
+
+    try {
+      var response = await http.get(
+        url,
+        headers: <String, String>{
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          'Content-Type': 'application/json',
+          // "Access-Control-Allow-Origin": "*",
+          // 'Accept': '*/*'
+        },
+      );
+
+      print("Response of booking Vip ticket ${response.body}");
+      if (response.statusCode == 200) {
+        Momentum.controller<VipTicketController>(context).getUserVipTickets(
+            Momentum.controller<AuthController>(context).model.id, context);
+        Navigator.pop(context);
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("📣Attention athlete"),
+            content: Text("Something went wrong, please try again later"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Caught error in refun vipTicket: ${e.toString()}');
     }
   }
 }

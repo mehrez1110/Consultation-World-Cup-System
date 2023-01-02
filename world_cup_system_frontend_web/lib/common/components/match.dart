@@ -7,6 +7,7 @@ import 'package:world_cup_system_frontend_web/common/components/regular_text_inp
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
+import 'package:world_cup_system_frontend_web/views/match-tickets-view.dart';
 import 'package:world_cup_system_frontend_web/views/vip-loung-view.dart';
 
 import '../../controllers/vip-ticket-controller.dart';
@@ -504,13 +505,13 @@ class _MatchState extends State<Match> {
                     ),
                     onPressed: () {
                       Momentum.controller<TicketController>(context)
-                          .getMatchTickets(widget.id, context);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => VipComponent(),
-                      //       fullscreenDialog: true,
-                      //     ));
+                          .getAvailableMatchTickets(widget.id, context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MatchTicketsView(),
+                            fullscreenDialog: true,
+                          ));
                     },
                     child: Text(
                       'Book Ticket',
