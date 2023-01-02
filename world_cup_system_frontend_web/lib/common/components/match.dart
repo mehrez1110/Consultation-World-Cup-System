@@ -504,7 +504,7 @@ class _MatchState extends State<Match> {
                 ),
               ],
             ),
-            widget.role != "Guest"
+            widget.role == "USER"
                 ? Column(
                     children: [
                       Container(
