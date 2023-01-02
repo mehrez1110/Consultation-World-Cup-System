@@ -12,6 +12,7 @@ class AuthModel extends MomentumModel<AuthController> {
   final String email;
   final String area;
   final String birthDate;
+  final listOfUsers;
   final isNotificationEnabled;
   final bool loginInProgress;
   final bool signUpInProgress;
@@ -30,6 +31,7 @@ class AuthModel extends MomentumModel<AuthController> {
     AuthController controller, {
     this.id,
     required this.email,
+    this.listOfUsers,
     this.changePasswordTempToken,
     this.loginInProgress = false,
     this.signUpInProgress = false,
@@ -64,6 +66,7 @@ class AuthModel extends MomentumModel<AuthController> {
     final tempToken,
     final verified,
     bool? loading,
+    final listOfUsers,
     final id,
   }) {
     AuthModel(
@@ -87,6 +90,7 @@ class AuthModel extends MomentumModel<AuthController> {
       tempToken: tempToken ?? this.tempToken,
       loading: loading ?? this.loading,
       id: id ?? this.id,
+      listOfUsers: listOfUsers ?? this.listOfUsers,
     ).updateMomentum();
   }
 }

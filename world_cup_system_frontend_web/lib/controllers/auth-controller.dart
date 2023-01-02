@@ -159,6 +159,122 @@ class AuthController extends MomentumController<AuthModel> {
     }
   }
 
+  Future<void> getAllUsers(context, String userName) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/users/");
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+        List users = [];
+
+        for (var responseItem in jsonResponse) {
+          var user = CurrentUserType.fromJson(responseItem);
+          users.add(user);
+        }
+        model.update(listOfUsers: users);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("Something went wrong, please try again later"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteUser(context, int id) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/users/", {"id": id.toString()});
+      var response = await http.delete(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("Something went wrong, please try again later"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> acceptUser(context, int id) async {
+    try {
+      var url =
+          Uri.http(STAGING_URL, "/api/user/accept/", {"id": id.toString()});
+      var response = await http.delete(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("Something went wrong, please try again later"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   // void goToHomePage(context, Ticket? toBeRatedTicket) {
   //   Navigator.push(
   //     context,
