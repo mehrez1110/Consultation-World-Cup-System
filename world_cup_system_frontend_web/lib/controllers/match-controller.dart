@@ -10,6 +10,7 @@ import 'package:momentum/momentum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 import 'package:world_cup_system_frontend_web/data_models/stadium.dart';
 import 'package:world_cup_system_frontend_web/data_models/team.dart';
 import 'package:world_cup_system_frontend_web/models/auth-model.dart';
@@ -70,7 +71,7 @@ class MatchController extends MomentumController<MatchModel> {
       });
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
-        List teams = [];
+        List<Team> teams = [];
         List<String> names = [];
         for (var responseItem in jsonResponse) {
           final match = Team(
@@ -92,25 +93,50 @@ class MatchController extends MomentumController<MatchModel> {
     }
   }
 
-  Future<void> updateMatch(context, int id) async {
+  Future<void> updateMatch(
+      context,
+      int id,
+      String homeTeam,
+      String awayTeam,
+      String matchStadium,
+      String matchDate,
+      String lineManA,
+      String lineManB,
+      String referee) async {
     try {
+      var stadiums = Momentum.controller<StadiumController>(context).model;
+
+      print(stadiums.stadiumslist[0].name);
+      //print(stadiumModelList[0].toJson());
       var url = Uri.http(STAGING_URL, "/api/matches/", {"id": id.toString()});
-      http.Response response = await http.post(url, headers: {
-        'Authorization':
-            'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
-        "Access-Control-Allow-Origin": "*",
-        // 'Content-Type': 'application/json',
-        'Accept': '*/*'
-      }, body: {
-        "homeTeam": model.firstTeam,
-        "awayTeam": model.secondTeam,
-        "matchStadium": model.stadium,
-        "matchDate": model.dateTime,
-        "seatsCount": model.seatsLeft,
-        "lineManA": model.firstLinesman,
-        "lineManB": model.secondLinesman,
-        "referee": model.mainReferee,
-      });
+      http.Response response = await http.put(url,
+          headers: {
+            'Authorization':
+                'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            // get team object from team list by name
+            "matchStadium": (stadiums.stadiumslist!
+                    .firstWhere((element) => element.name == matchStadium))
+                .toJson(),
+
+            "homeTeam": (model.teamsList!
+                .firstWhere((element) => element.name == homeTeam)).toJson(),
+            "awayTeam": (model.teamsList!
+                .firstWhere((element) => element.name == awayTeam)).toJson(),
+
+            "matchDate": matchDate,
+            "lineManA": lineManA,
+            "lineManB": lineManB,
+            "referee": referee,
+          }));
+
+      if (response.statusCode == 200) {
+        print(response.body);
+      }
     } catch (e) {
       print(e);
     }
