@@ -119,7 +119,7 @@ class _SignUpState extends MomentumState<SignUp> {
                                               child: Text.rich(TextSpan(
                                                   children: <InlineSpan>[
                                                     TextSpan(
-                                                      text: 'Sign Up',
+                                                      text: 'Sign up',
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 42,

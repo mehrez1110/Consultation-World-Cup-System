@@ -182,7 +182,10 @@ class _SignInState extends MomentumState<SignIn> {
                                               alignment: Alignment.center,
                                               // color: Colors.pink,
 
+                                              // color: Colors.pink,
+                                              height: (72 / 844) * _height,
                                               child: RegularTextInputNew(
+                                                name: true,
                                                 labelColor: secondary,
                                                 textColor: secondary,
                                                 fillColor: Colors.white,
@@ -200,6 +203,9 @@ class _SignInState extends MomentumState<SignIn> {
                                               ),
                                             ),
                                             Container(
+                                              alignment: Alignment.center,
+                                              // color: Colors.pink,
+                                              height: (72 / 844) * _height,
                                               margin: EdgeInsets.only(
                                                   bottom: (2 / 844) * _height),
                                               child: RegularTextInputNew(
@@ -212,7 +218,7 @@ class _SignInState extends MomentumState<SignIn> {
                                                     Color(0x94192B37),
                                                 errorBorderColor:
                                                     Color(0xFFFD7542),
-                                                // password: true,
+                                                password: true,
                                                 label: "Password",
                                                 hintText: "Password",
                                                 protectedText: _obscureText,
