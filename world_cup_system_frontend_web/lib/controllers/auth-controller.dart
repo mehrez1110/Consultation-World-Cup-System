@@ -216,6 +216,7 @@ class AuthController extends MomentumController<AuthModel> {
       );
 
       if (response.statusCode == 200) {
+        getAllUsers(context);
         print(response.body);
       }
     } catch (e) {
@@ -253,6 +254,7 @@ class AuthController extends MomentumController<AuthModel> {
       );
 
       if (response.statusCode == 200) {
+        getAllUsers(context);
         print(response.body);
       }
     } catch (e) {

@@ -505,58 +505,60 @@ class _MatchState extends State<Match> {
                 ),
               ],
             ),
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFEC310),
-                    ),
-                    onPressed: () {
-                      Momentum.controller<VipTicketController>(context)
-                          .getMatchVipTickets(widget.id, context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VipComponent(),
-                            fullscreenDialog: true,
-                          ));
-                    },
-                    child: Text(
-                      'Book Vip Ticket',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+            widget.role != "Guest"
+                ? Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFFEC310),
+                          ),
+                          onPressed: () {
+                            Momentum.controller<VipTicketController>(context)
+                                .getMatchVipTickets(widget.id, context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VipComponent(),
+                                  fullscreenDialog: true,
+                                ));
+                          },
+                          child: Text(
+                            'Book Vip Ticket',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primary,
-                    ),
-                    onPressed: () {
-                      Momentum.controller<TicketController>(context)
-                          .getAvailableMatchTickets(widget.id, context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MatchTicketsView(),
-                            fullscreenDialog: true,
-                          ));
-                    },
-                    child: Text(
-                      'Book Ticket',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primary,
+                          ),
+                          onPressed: () {
+                            Momentum.controller<TicketController>(context)
+                                .getAvailableMatchTickets(widget.id, context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MatchTicketsView(),
+                                  fullscreenDialog: true,
+                                ));
+                          },
+                          child: Text(
+                            'Book Ticket',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                : SizedBox()
           ],
         ),
         SizedBox(

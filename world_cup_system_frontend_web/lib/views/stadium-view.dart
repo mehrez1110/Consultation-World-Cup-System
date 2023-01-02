@@ -273,6 +273,14 @@ class _StadiumViewState extends MomentumState<StadiumView> {
               backgroundColor: primary,
             ),
             body: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    Color(0xFFFBFBFE),
+                    Color(0xFFECEFFD),
+                  ])),
               child: ListView(
                 shrinkWrap: true,
                 children: [

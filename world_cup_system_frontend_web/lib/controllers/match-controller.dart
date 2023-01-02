@@ -135,6 +135,7 @@ class MatchController extends MomentumController<MatchModel> {
           }));
 
       if (response.statusCode == 200) {
+        getMatches(context);
         print(response.body);
       }
     } catch (e) {
@@ -183,6 +184,7 @@ class MatchController extends MomentumController<MatchModel> {
           }));
 
       if (response.statusCode == 200) {
+        getMatches(context);
         print(response.body);
       }
     } catch (e) {

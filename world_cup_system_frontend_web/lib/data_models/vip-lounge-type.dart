@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world_cup_system_frontend_web/data_models/stadium.dart';
+import 'package:world_cup_system_frontend_web/models/stadium-model.dart';
 
 class VipLounge {
   final id;
