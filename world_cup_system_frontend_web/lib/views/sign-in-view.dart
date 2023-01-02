@@ -181,7 +181,6 @@ class _SignInState extends MomentumState<SignIn> {
                                             Container(
                                               alignment: Alignment.center,
                                               // color: Colors.pink,
-
                                               child: RegularTextInputNew(
                                                 labelColor: secondary,
                                                 textColor: secondary,

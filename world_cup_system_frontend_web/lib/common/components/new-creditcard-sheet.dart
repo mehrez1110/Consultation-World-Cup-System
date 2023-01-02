@@ -99,7 +99,7 @@ class _MyHomePageState extends State<NewCreditCardView> {
                   ),
                   CreditCard(
                     width: _width * 0.3,
-                    height: _height * 0.25,
+                    height: _height * 0.27,
                     cardNumber: cardNumber,
                     cardExpiry: expiryDate,
                     cardHolderName: cardHolderName,
