@@ -19,7 +19,10 @@ class MatchModel extends MomentumModel<MatchController> {
   final mainReferee;
   final firstLinesman;
   final secondLinesman;
-  final seatsLeft;
+  final vipRows;
+  final vipColumns;
+  final vipSeatsCount;
+  final seatsCount;
   final matcheslist;
   final teamsList;
   final teamNames;
@@ -29,11 +32,14 @@ class MatchModel extends MomentumModel<MatchController> {
       this.id,
       this.secondTeam,
       this.stadium,
+      this.seatsCount,
       this.dateTime,
       this.mainReferee,
       this.firstLinesman,
       this.secondLinesman,
-      this.seatsLeft,
+      this.vipRows,
+      this.vipColumns,
+      this.vipSeatsCount,
       this.matcheslist,
       this.teamNames,
       this.teamsList})
@@ -49,6 +55,10 @@ class MatchModel extends MomentumModel<MatchController> {
       String? mainReferee,
       String? firstLinesman,
       String? secondLinesman,
+      vipRows,
+      vipColumns,
+      vipSeatsCount,
+      seatsCount,
       int? seatsLeft,
       matcheslist,
       teamsList,
@@ -62,7 +72,10 @@ class MatchModel extends MomentumModel<MatchController> {
             mainReferee: mainReferee ?? this.mainReferee,
             firstLinesman: firstLinesman ?? this.firstLinesman,
             secondLinesman: secondLinesman ?? this.secondLinesman,
-            seatsLeft: seatsLeft ?? this.seatsLeft,
+            vipRows: vipRows ?? this.vipRows,
+            vipColumns: vipColumns ?? this.vipColumns,
+            vipSeatsCount: vipSeatsCount ?? this.vipSeatsCount,
+            seatsCount: seatsCount ?? this.seatsCount,
             matcheslist: matcheslist ?? this.matcheslist,
             teamsList: teamsList ?? this.teamsList,
             teamNames: teamNames ?? this.teamNames)

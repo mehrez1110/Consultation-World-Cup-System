@@ -19,7 +19,7 @@ class Match extends StatefulWidget {
   final mainReferee;
   final firstLinesman;
   final secondLinesman;
-  final seatsLeft;
+
   final role;
 
   const Match(
@@ -32,7 +32,6 @@ class Match extends StatefulWidget {
       this.mainReferee = "Mehrez",
       this.firstLinesman = "Tata",
       this.secondLinesman = "Kiwi",
-      this.seatsLeft = 20,
       this.role = "user"})
       : super(key: key);
 
@@ -572,10 +571,6 @@ class _MatchState extends State<Match> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            Text(
-              widget.seatsLeft.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, color: primary),
             ),
             SizedBox(
               width: _width * 0.1,

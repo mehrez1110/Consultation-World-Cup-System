@@ -309,8 +309,6 @@ class _MatchViewState extends MomentumState<MatchView> {
                               stadium:
                                   matchModel.matcheslist[index].stadium.name,
                               dateTime: matchModel.matcheslist[index].dateTime,
-                              seatsLeft:
-                                  matchModel.matcheslist[index].seatsLeft,
                               firstLinesman:
                                   matchModel.matcheslist[index].firstLinesman,
                               secondLinesman:

@@ -45,7 +45,7 @@ class MatchController extends MomentumController<MatchModel> {
             secondTeam: Team.fromJson(responseItem["awayTeam"]),
             stadium: Stadium.fromJson(responseItem["matchStadium"]),
             dateTime: responseItem["matchDate"],
-            seatsLeft: responseItem["seatsCount"],
+            vipSeatsCount: responseItem["vipSeatsCount"],
             firstLinesman: responseItem["lineManA"],
             secondLinesman: responseItem["lineManB"],
             mainReferee: responseItem["referee"],
