@@ -145,6 +145,71 @@ class TicketController extends MomentumController<TicketModel> {
     }
   }
 
+  Future<void> getMatchTickets(matchId, context) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/tickets/by-match-id/",
+          {'matchId': matchId.toString()});
+
+      var response = await http.get(
+        url,
+        headers: <String, String>{
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          'Accept': '*/*'
+        },
+      );
+      // print(response.body);
+      if (response.statusCode == 200) {
+        List userTickets = [];
+        // model.update(userTickets: userTickets);
+
+        var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
+        print(jsonResponse);
+        for (var responseItem in jsonResponse) {
+          final ticket = MatchTicket(
+            price: responseItem['price'],
+            id: responseItem["id"],
+            matchId: responseItem["ticketMatch"]["id"],
+            firstTeam: responseItem["ticketMatch"]["homeTeam"]["name"],
+            secondTeam: responseItem["ticketMatch"]["awayTeam"]["name"],
+            stadium: responseItem["ticketMatch"]["matchStadium"]["name"],
+            mainReferee: responseItem["referee"],
+            firstLinesman: responseItem["lineManA"],
+            secondLinesman: responseItem["lineManB"],
+            ticketno: responseItem["seatNo"],
+            name: (responseItem["ticketOwner"] != null)
+                ? responseItem["ticketOwner"]["firstName"] +
+                    " " +
+                    responseItem["ticketOwner"]["lastName"]
+                : "noname",
+          );
+          userTickets.add(ticket);
+        }
+        model.update(matchTickets: userTickets);
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("📣Attention athlete"),
+            content: Text("Something went wrong, please try again later"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Caught error in getuser Tickets: ${e.toString()}');
+    }
+  }
+
   Future<void> bookTicket(ticketId, matchId, userId, context) async {
     var url = Uri.http(STAGING_URL, "/api/tickets/user-buy-ticket/",
         {"userId": userId.toString(), "ticketId": ticketId.toString()});

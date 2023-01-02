@@ -50,9 +50,9 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
     _tabController = TabController(
         vsync: this,
         length: role == "ADMIN"
-            ? 5
+            ? 2
             : (role == 'MANAGER')
-                ? 4
+                ? 3
                 : role == 'USER'
                     ? 3
                     : 1,
@@ -84,10 +84,6 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
               break;
 
             case 4:
-              SignIn();
-
-              break;
-            case 5:
               SignIn();
 
               break;
@@ -126,9 +122,9 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
 
           return DefaultTabController(
             length: role == 'ADMIN'
-                ? 5
+                ? 2
                 : (role == 'MANAGER')
-                    ? 4
+                    ? 3
                     : role == 'USER'
                         ? 3
                         : 1,
@@ -211,9 +207,6 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                         text: 'Matches',
                                       ),
                                       Tab(
-                                        text: 'Tickets',
-                                      ),
-                                      Tab(
                                         text: 'Stadiums',
                                       ),
                                       Tab(
@@ -232,16 +225,6 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                 : TabBar(
                                     controller: _tabController,
                                     tabs: [
-                                      Tab(
-                                        iconMargin: EdgeInsets.all(5),
-                                        text: 'Matches',
-                                      ),
-                                      Tab(
-                                        text: 'Tickets',
-                                      ),
-                                      Tab(
-                                        text: 'Stadiums',
-                                      ),
                                       Tab(
                                         text: 'Users',
                                       ),
@@ -275,7 +258,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                               controller: _tabController,
                               children: [
                                 MatchView(),
-                                TicketsView(),
+                                // TicketsView(),
                                 StadiumView(),
                                 UserProfile(),
                               ],
@@ -284,9 +267,9 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                               ? TabBarView(
                                   controller: _tabController,
                                   children: [
-                                    MatchView(),
-                                    TicketsView(),
-                                    StadiumView(), //stadiums
+                                    // MatchView(),
+                                    // TicketsView(),
+                                    // StadiumView(), //stadiums
                                     AdminUsersView(), //users
                                     UserProfile(), //profile
                                   ],

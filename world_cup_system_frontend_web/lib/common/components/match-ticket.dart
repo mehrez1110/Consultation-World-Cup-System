@@ -126,7 +126,17 @@ class MatchTicket extends StatelessWidget {
         .firstWhere((k) => mapedCountries[k] == firstTeam, orElse: () => "EG");
     var countryCode2 = mapedCountries.keys
         .firstWhere((k) => mapedCountries[k] == secondTeam, orElse: () => "EG");
-
+    var auth = Momentum.controller<AuthController>(context).model;
+    var role = "Guest";
+    if (auth.currentUser != null) {
+      if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
+        role = "ADMIN";
+      } else if (auth.currentUser.role.any((role) => role.name == "MANAGER")) {
+        role = "MANAGER";
+      } else if (auth.currentUser.role.any((role) => role.name == "USER")) {
+        role = "USER";
+      }
+    }
     return Container(
       height: _height * 0.2,
       width: _width * 0.7,
@@ -159,7 +169,7 @@ class MatchTicket extends StatelessWidget {
           children: [
             Column(
               children: [
-                Text('Name ',
+                Text('Ticket Owner ',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 Text(
@@ -200,20 +210,22 @@ class MatchTicket extends StatelessWidget {
             SizedBox(
               width: _width * 0.1,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFEC310),
-              ),
-              onPressed: () {
-                return showItemDialog(context);
-              },
-              child: Text(
-                'Buy Ticket',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
+            role != "MANAGER"
+                ? ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFEC310),
+                    ),
+                    onPressed: () {
+                      return showItemDialog(context);
+                    },
+                    child: Text(
+                      'Buy Ticket',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : SizedBox()
           ],
         ),
         Row(

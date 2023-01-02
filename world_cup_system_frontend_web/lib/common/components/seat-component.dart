@@ -48,14 +48,26 @@ class SeatsComponent extends StatefulWidget {
 class _SeatsComponentState extends State<SeatsComponent> {
   Color color1 = Color.fromARGB(255, 255, 220, 19);
   Color color2 = Color.fromARGB(255, 230, 172, 0);
+
   bool selected = false;
   @override
   Widget build(BuildContext context) {
+    var auth = Momentum.controller<AuthController>(context).model;
+    var role = "Guest";
+    if (auth.currentUser != null) {
+      if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
+        role = "ADMIN";
+      } else if (auth.currentUser.role.any((role) => role.name == "MANAGER")) {
+        role = "MANAGER";
+      } else if (auth.currentUser.role.any((role) => role.name == "USER")) {
+        role = "USER";
+      }
+    }
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return TextButton(
       onPressed: () {
-        if (widget.status == "available")
+        if (widget.status == "available" && role == "USER")
           showDialog(
             context: context,
             builder: (context) => AlertDialog(

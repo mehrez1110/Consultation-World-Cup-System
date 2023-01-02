@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
@@ -418,7 +419,17 @@ class _MatchState extends State<Match> {
     var countryCode2 = mapedCountries.keys.firstWhere(
         (k) => mapedCountries[k] == widget.secondTeam,
         orElse: () => "EG");
-
+    var auth = Momentum.controller<AuthController>(context).model;
+    var role = "Guest";
+    if (auth.currentUser != null) {
+      if (auth.currentUser.role.any((role) => role.name == "ADMIN")) {
+        role = "ADMIN";
+      } else if (auth.currentUser.role.any((role) => role.name == "MANAGER")) {
+        role = "MANAGER";
+      } else if (auth.currentUser.role.any((role) => role.name == "USER")) {
+        role = "USER";
+      }
+    }
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return Container(
@@ -504,7 +515,7 @@ class _MatchState extends State<Match> {
                 ),
               ],
             ),
-            widget.role == "USER"
+            widget.role == "USER" || widget.role == "MANAGER"
                 ? Column(
                     children: [
                       Container(
@@ -538,8 +549,12 @@ class _MatchState extends State<Match> {
                             backgroundColor: primary,
                           ),
                           onPressed: () {
-                            Momentum.controller<TicketController>(context)
-                                .getAvailableMatchTickets(widget.id, context);
+                            role == "USER"
+                                ? Momentum.controller<TicketController>(context)
+                                    .getAvailableMatchTickets(
+                                        widget.id, context)
+                                : Momentum.controller<TicketController>(context)
+                                    .getMatchTickets(widget.id, context);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

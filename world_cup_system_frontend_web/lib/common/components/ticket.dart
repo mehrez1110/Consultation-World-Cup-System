@@ -125,6 +125,7 @@ class Ticket extends StatelessWidget {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
     var countryCode1 = mapedCountries.keys
         .firstWhere((k) => mapedCountries[k] == firstTeam, orElse: () => "EG");
     var countryCode2 = mapedCountries.keys
