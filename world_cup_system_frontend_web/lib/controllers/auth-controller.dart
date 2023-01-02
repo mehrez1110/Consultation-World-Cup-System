@@ -315,6 +315,71 @@ class AuthController extends MomentumController<AuthModel> {
       print(e);
     }
   }
+
+  Future<void> handleUserChangePassword(
+      String currentPassword,
+      String newPassword,
+      String newRePassword,
+      String username,
+      BuildContext context) async {
+    try {
+      var url = Uri.http(
+          STAGING_URL,
+          "/api/users/change-user-password-by-username",
+          {"username": username.toString()});
+      var response = await http.post(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: jsonEncode(<String, String>{
+          "currentPassword": currentPassword,
+          "newPassword": newPassword,
+          "reNewPassword": newRePassword
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // getAllUsers(context);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("📣Attention athlete"),
+            content: Text("password changed successfully"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+        print(response.body);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("📣Attention athlete"),
+          content: Text("incorrect current password"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 }
   
 

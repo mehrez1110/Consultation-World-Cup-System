@@ -134,14 +134,6 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                         : 1,
             child: Scaffold(
               appBar: AppBar(
-                actions: [
-                  IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.settings,
-                        color: secondary,
-                      ))
-                ],
                 leadingWidth: 100,
                 // titleSpacing: -5,
                 // centerTitle: false,

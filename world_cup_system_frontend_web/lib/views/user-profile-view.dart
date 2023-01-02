@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:momentum/momentum.dart';
+import 'package:world_cup_system_frontend_web/common/components/new-password-sheet.dart';
+import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
 
 import '../common/components/regular_text_input_new.dart';
 import '../common/constants.dart';
@@ -265,7 +267,16 @@ class _UserProfileState extends State<UserProfile> {
                             right: (80 / 390) * _width,
                             left: (28 / 390) * _width),
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  backgroundColor: primary,
+                                  insetPadding: EdgeInsets.all(0),
+                                  content: NewPasswordViewSheet(),
+                                ),
+                              );
+                            },
                             child: Text(
                               'Change Password',
                               style: TextStyle(
@@ -331,7 +342,11 @@ class _UserProfileState extends State<UserProfile> {
                       Expanded(
                         flex: 3,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            Momentum.resetAll(context);
+
+                            await Navigator.popAndPushNamed(context, "/");
+                          },
                           child: Container(
                             margin: EdgeInsets.only(
                               left: (28 / 390) * _width,

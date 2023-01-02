@@ -74,6 +74,14 @@ class _SignInState extends MomentumState<SignIn> {
   bool? _isConnectionSuccessful;
 
   void initMomentumState() {
+    Future.delayed(
+      Duration(seconds: 2),
+      () {
+        if (widget.triggerLogoutEvent) {
+          Momentum.resetAll(context);
+        }
+      },
+    );
     super.initMomentumState();
   }
 
