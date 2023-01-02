@@ -1,7 +1,7 @@
 import 'package:world_cup_system_frontend_web/common/components/ticket.dart';
 
 class CurrentUserType {
-  int id;
+  final id;
   String username;
   String password;
   String firstName;
@@ -18,7 +18,7 @@ class CurrentUserType {
   CurrentUserType({
     this.firstName = 'user',
     this.lastName = 'user',
-    this.id = 0,
+    this.id,
     this.username = '',
     this.password = '',
     this.birthDate = " ",

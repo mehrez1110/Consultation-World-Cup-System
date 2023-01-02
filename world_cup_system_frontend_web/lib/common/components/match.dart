@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:momentum/momentum.dart';
-import 'package:string_capitalize/string_capitalize.dart';
-import 'package:world_cup_system_frontend_web/common/components/regular_drop_down_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
-import 'package:world_cup_system_frontend_web/views/matches-view.dart';
+import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
+import 'package:world_cup_system_frontend_web/views/match-tickets-view.dart';
+import 'package:world_cup_system_frontend_web/views/vip-loung-view.dart';
+
+import '../../controllers/vip-ticket-controller.dart';
 
 class Match extends StatefulWidget {
   final id;
@@ -504,20 +505,57 @@ class _MatchState extends State<Match> {
                 ),
               ],
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFEC310),
-              ),
-              onPressed: () {
-                // ignore: void_checks
-                return bookDialog(context);
-              },
-              child: Text(
-                'Book',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFFEC310),
+                    ),
+                    onPressed: () {
+                      Momentum.controller<VipTicketController>(context)
+                          .getMatchVipTickets(widget.id, context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VipComponent(),
+                            fullscreenDialog: true,
+                          ));
+                    },
+                    child: Text(
+                      'Book Vip Ticket',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primary,
+                    ),
+                    onPressed: () {
+                      Momentum.controller<TicketController>(context)
+                          .getAvailableMatchTickets(widget.id, context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MatchTicketsView(),
+                            fullscreenDialog: true,
+                          ));
+                    },
+                    child: Text(
+                      'Book Ticket',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             )
           ],
         ),

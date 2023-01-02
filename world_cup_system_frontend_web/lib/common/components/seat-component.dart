@@ -1,13 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:momentum/momentum.dart';
+import 'package:world_cup_system_frontend_web/common/components/new-creditcard-sheet.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/vip-ticket-controller.dart';
+import 'package:world_cup_system_frontend_web/data_models/vip-lounge-type.dart';
 
 import '../constants.dart';
 
 class SeatsComponent extends StatefulWidget {
-  final int index;
+  final id;
   final String status;
+  final firstTeam;
+  final secondTeam;
+  final stadium;
+  final dateTime;
+  final mainReferee;
+  final firstLinesman;
+  final secondLinesman;
+  final ticketno;
+  final name;
+  final matchId;
+  final price;
+  final VipLounge vipLounge;
 
   const SeatsComponent(
-      {Key? key, required this.index, this.status = "available"})
+      {Key? key,
+      this.status = "available",
+      this.firstTeam,
+      this.secondTeam,
+      this.stadium,
+      this.dateTime,
+      this.mainReferee,
+      this.firstLinesman,
+      this.secondLinesman,
+      this.ticketno,
+      required this.vipLounge,
+      this.name,
+      this.id,
+      this.matchId,
+      this.price})
       : super(key: key);
 
   @override
@@ -20,29 +51,28 @@ class _SeatsComponentState extends State<SeatsComponent> {
   bool selected = false;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (!selected) {
-          if (widget.status == "available") {
-            setState(() {
-              selected = true;
-              color1 = Color(0xFF49BCE3);
-              color2 = Color.fromARGB(255, 37, 114, 140);
-            });
-          }
-        } else {
-          setState(() {
-            selected = false;
-            color1 = Color.fromARGB(255, 255, 220, 19);
-            color2 = Color.fromARGB(255, 230, 172, 0);
-          });
-        }
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+    return TextButton(
+      onPressed: () {
+        if (widget.status == "available")
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: primary,
+              insetPadding: EdgeInsets.all(0),
+              content: NewCreditCardView(
+                  ticketId: widget.id,
+                  matchId: widget.matchId,
+                  price: widget.price),
+            ),
+          );
       },
       child: Container(
-          height: 20,
-          width: 20,
+          height: 0.05 * _height,
+          width: 0.05 * _width,
           decoration: BoxDecoration(
-            gradient: (widget.status == "available")
+            gradient: (widget.status.toString() == "available")
                 ? LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -76,15 +106,15 @@ class _SeatsComponentState extends State<SeatsComponent> {
                 "Seat",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 0.011 * _height,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
-                "# " + widget.index.toString(),
+                "# " + widget.ticketno.toString(),
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 0.011 * _height,
                   fontWeight: FontWeight.w700,
                 ),
               ),

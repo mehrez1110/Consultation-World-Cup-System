@@ -6,11 +6,11 @@ import 'package:world_cup_system_frontend_web/common/components/book-match.dart'
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
-import 'package:world_cup_system_frontend_web/controllers/vip-ticket-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
 
-import '../../controllers/ticket-controller.dart';
+import 'new-creditcard-sheet.dart';
 
-class Ticket extends StatelessWidget {
+class MatchTicket extends StatelessWidget {
   final id;
   final firstTeam;
   final secondTeam;
@@ -21,13 +21,13 @@ class Ticket extends StatelessWidget {
   final secondLinesman;
   final ticketno;
   final name;
-  final isVip;
+  final vip;
   final price;
+  final matchId;
 
-  const Ticket(
+  const MatchTicket(
       {Key? key,
-      this.price,
-      this.id,
+      this.matchId,
       this.firstTeam = "Germany",
       this.secondTeam = "Saudi Arabia",
       this.stadium = "Suez stadium",
@@ -37,7 +37,9 @@ class Ticket extends StatelessWidget {
       this.secondLinesman = "Kiwi",
       this.ticketno = 20,
       this.name = "Mustafa Usama",
-      this.isVip = false})
+      this.id,
+      this.vip = false,
+      this.price})
       : super(key: key);
 
   showItemDialog(BuildContext context) async {
@@ -54,7 +56,7 @@ class Ticket extends StatelessWidget {
             children: const [
               Icon(Icons.shopping_bag_outlined, color: primary, size: 30),
               Text(
-                "Are You Sure you want to cancel this ticket?",
+                "Are You Sure you want to buy this ticket?",
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: primary, fontSize: 22),
               ),
@@ -72,23 +74,18 @@ class Ticket extends StatelessWidget {
                         backgroundColor: const Color(0xFFFEC310),
                       ),
                       onPressed: () {
-                        if (isVip) {
-                          Momentum.controller<VipTicketController>(context)
-                              .refundVipTicket(
-                                  id,
-                                  Momentum.controller<AuthController>(context)
-                                      .model
-                                      .id,
-                                  context);
-                        } else {
-                          Momentum.controller<TicketController>(context)
-                              .refundTicket(
-                                  id,
-                                  Momentum.controller<AuthController>(context)
-                                      .model
-                                      .id,
-                                  context);
-                        }
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: primary,
+                            insetPadding: EdgeInsets.all(0),
+                            content: NewCreditCardView(
+                                isVip: false,
+                                ticketId: id,
+                                matchId: matchId,
+                                price: price),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Yes',
@@ -180,7 +177,7 @@ class Ticket extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  'Ticket No. ',
+                  'MatchTicket No. ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -211,7 +208,7 @@ class Ticket extends StatelessWidget {
                 return showItemDialog(context);
               },
               child: Text(
-                'Cancel',
+                'Buy Ticket',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -278,15 +275,15 @@ class Ticket extends StatelessWidget {
                 ),
               ],
             ),
-            isVip
+            vip
                 ? Text(
-                    'VIP Ticket',
+                    'VIP MatchTicket',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   )
                 : Text(
-                    'Regular Ticket',
+                    'Regular MatchTicket',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
