@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:momentum/momentum.dart';
 import 'package:string_capitalize/string_capitalize.dart';
+import 'package:world_cup_system_frontend_web/common/components/regular_drop_down_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
+import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 
 class Match extends StatefulWidget {
   final id;
@@ -195,6 +198,18 @@ class _MatchState extends State<Match> {
 
   editMatch(BuildContext context) async {
     var matches = Momentum.controller<MatchController>(context).model;
+    var matcheController = Momentum.controller<MatchController>(context);
+    String homeTeamValue = widget.firstTeam;
+    String awayTeamValue = widget.secondTeam;
+    //print(drop);
+    var stadiums = Momentum.controller<StadiumController>(context).model;
+    // var stadiumsItems = stadiums.stadiumslist.map((e) => e.name ).toList();
+    // List<String> sitems = stadiumsItems as List<String>;
+    String stadiumValue = widget.stadium;
+    // get team names from teams list inside matches model
+    // teamsItems = matches.teamNames.toString();
+
+    // stadiumsItems = stadiums.stadiumslist.map((e) => e.name).toList();
 
     _homeTeamController.text = widget.firstTeam;
     _awayTeamController.text = widget.secondTeam;
@@ -237,82 +252,108 @@ class _MatchState extends State<Match> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
-                      fillColor: Colors.white,
-                      hintTextColor: Color(0x940A1F33),
-                      prefixIconColor: Color(0x94192B37),
-                      errorBorderColor: Color(0xFFFD7542),
-                      label: "Home Team",
-                      controller: _homeTeamController,
-                      keyboardType: TextInputType.name,
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Home Team",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: homeTeamValue,
+                      items: teams.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          homeTeamValue = value!;
+                        });
+                      },
+                    ),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Away Team",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: awayTeamValue,
+                      items: teams.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          awayTeamValue = value!;
+                        });
+                      },
+                    ),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Match Stadium",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: stadiumValue,
+                      items: stadiums.stadiumsNames!.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          stadiumValue = value!;
+                        });
+                      },
                     ),
                     RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
                       fillColor: Colors.white,
                       hintTextColor: Color(0x940A1F33),
                       prefixIconColor: Color(0x94192B37),
                       errorBorderColor: Color(0xFFFD7542),
-                      label: "Away Team",
-                      controller: _awayTeamController,
-                      keyboardType: TextInputType.name,
-                    ),
-                    RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
-                      fillColor: Colors.white,
-                      hintTextColor: Color(0x940A1F33),
-                      prefixIconColor: Color(0x94192B37),
-                      errorBorderColor: Color(0xFFFD7542),
-                      label: "Stadium",
-                      controller: _stadiumController,
-                      keyboardType: TextInputType.name,
-                    ),
-                    RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
-                      fillColor: Colors.white,
-                      hintTextColor: Color(0x940A1F33),
-                      prefixIconColor: Color(0x94192B37),
-                      errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
                       label: "Date & Time",
                       controller: _dateTimeController,
-                      keyboardType: TextInputType.name,
                     ),
                     RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
                       fillColor: Colors.white,
                       hintTextColor: Color(0x940A1F33),
                       prefixIconColor: Color(0x94192B37),
                       errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
                       label: "Main Referee",
                       controller: _mainRefereeController,
-                      keyboardType: TextInputType.name,
                     ),
                     RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
                       fillColor: Colors.white,
                       hintTextColor: Color(0x940A1F33),
                       prefixIconColor: Color(0x94192B37),
                       errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
                       label: "First Linesman",
                       controller: _firstLinesmanController,
-                      keyboardType: TextInputType.name,
                     ),
                     RegularTextInputNew(
-                      labelColor: secondary,
-                      textColor: secondary,
                       fillColor: Colors.white,
                       hintTextColor: Color(0x940A1F33),
                       prefixIconColor: Color(0x94192B37),
                       errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
                       label: "Second Linesman",
                       controller: _secondLinesmanController,
-                      keyboardType: TextInputType.name,
                     ),
                     Container(
                       width: _width * 0.5,
@@ -335,20 +376,18 @@ class _MatchState extends State<Match> {
                               // update match with in list with certain id match
                               // fel updateeee bta3et match ma ana law ghayart esm el team hageb el id bta3et el team mnen wala hab3ato ezay fe update
 
-                              matches.matcheslist.forEach((element) {
-                                if (element.id == widget.id) {
-                                  element.homeTeam = _homeTeamController.text;
-                                  element.awayTeam = _awayTeamController.text;
-                                  element.stadium = _stadiumController.text;
-                                  element.dateTime = _dateTimeController.text;
-                                  element.mainReferee =
-                                      _mainRefereeController.text;
-                                  element.firstLinesman =
-                                      _firstLinesmanController.text;
-                                  element.secondLinesman =
-                                      _secondLinesmanController.text;
-                                }
-                              });
+                              // get the match with the id of the match that we want to update and update it with the new new teams
+
+                              matcheController.updateMatch(
+                                  context,
+                                  widget.id,
+                                  homeTeamValue,
+                                  awayTeamValue,
+                                  stadiumValue,
+                                  _dateTimeController.text,
+                                  _firstLinesmanController.text,
+                                  _secondLinesmanController.text,
+                                  _mainRefereeController.text);
 
                               Navigator.of(context).pop();
                             },

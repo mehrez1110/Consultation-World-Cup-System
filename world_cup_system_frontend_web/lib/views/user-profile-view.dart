@@ -17,10 +17,39 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  // set state to false to disable editing
+  bool editable = false;
+
+  // set state function
+  void setEditable(bool value) {
+    setState(() {
+      editable = value;
+    });
+  }
+
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _genderController = TextEditingController();
+  final _nationalityController = TextEditingController();
+  final _dateOfBirthController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    var userController = Momentum.controller<AuthController>(context);
+    _usernameController.text = userController.model.currentUser.username;
+    _emailController.text = userController.model.currentUser.email;
+    _firstNameController.text = userController.model.currentUser.firstName;
+    _lastNameController.text = userController.model.currentUser.lastName;
+    _emailController.text = userController.model.currentUser.email;
+    _genderController.text = userController.model.currentUser.gender;
+    _nationalityController.text = userController.model.currentUser.nationality;
+    _dateOfBirthController.text = userController.model.currentUser.birthDate;
+
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    // bool editable = false;
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
     return MomentumBuilder(
@@ -87,9 +116,10 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "First Name",
                                 hintText: currentUser.firstName,
+                                controller: _firstNameController,
                               ),
                             ),
                             SizedBox(
@@ -108,9 +138,10 @@ class _UserProfileState extends State<UserProfile> {
                                   prefixIconColor: Color(0x94192B37),
                                   errorBorderColor: Color(0xFFFD7542),
                                   name: true,
-                                  disable: true,
+                                  disable: !editable ? true : false,
                                   label: "Last Name",
                                   hintText: currentUser.lastName,
+                                  controller: _lastNameController,
                                 ),
                               ),
                             ),
@@ -131,8 +162,9 @@ class _UserProfileState extends State<UserProfile> {
                                 email: true,
                                 label: "Email",
                                 hintText: currentUser.email,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 keyboardType: TextInputType.emailAddress,
+                                controller: _emailController,
                               ),
                             ),
                             Container(
@@ -146,9 +178,10 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "Username",
                                 hintText: currentUser.username,
+                                controller: _usernameController,
                               ),
                             ),
                             Container(
@@ -162,9 +195,10 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "Gender",
                                 hintText: currentUser.gender,
+                                controller: _genderController,
                               ),
                             ),
                             Container(
@@ -178,9 +212,10 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "Birthdate",
                                 hintText: currentUser.birthDate,
+                                controller: _dateOfBirthController,
                               ),
                             ),
                             Container(
@@ -194,9 +229,10 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "Nationality",
                                 hintText: currentUser.nationality,
+                                controller: _nationalityController,
                               ),
                             ),
                             Container(
@@ -210,7 +246,7 @@ class _UserProfileState extends State<UserProfile> {
                                 prefixIconColor: Color(0x94192B37),
                                 errorBorderColor: Color(0xFFFD7542),
                                 name: true,
-                                disable: true,
+                                disable: !editable ? true : false,
                                 label: "Role",
                                 hintText: currentUser
                                     .role[currentUser.role.length - 1].name,
@@ -239,21 +275,58 @@ class _UserProfileState extends State<UserProfile> {
                                   fontSize: (16 / 844) * _height),
                             )),
                       ),
-                      Container(
-                        // alignment: Alignment.center,
-                        margin: EdgeInsets.only(
-                            right: (80 / 390) * _width,
-                            left: (28 / 390) * _width),
-                        child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Edit Personal Data',
-                              style: TextStyle(
-                                  color: secondary,
-                                  fontFamily: 'sfprorounded',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: (16 / 844) * _height),
-                            )),
+                      Column(
+                        children: [
+                          Container(
+                            // alignment: Alignment.center,
+                            margin: EdgeInsets.only(
+                                right: (80 / 390) * _width,
+                                left: (28 / 390) * _width),
+                            child: TextButton(
+                                onPressed: () {
+                                  setEditable(!editable);
+                                },
+                                child: Text(
+                                  'Edit Personal Data',
+                                  style: TextStyle(
+                                      color: secondary,
+                                      fontFamily: 'sfprorounded',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: (16 / 844) * _height),
+                                )),
+                          ),
+                          !editable
+                              ? Container()
+                              : Container(
+                                  // alignment: Alignment.center,
+                                  margin: EdgeInsets.only(
+                                      right: (80 / 390) * _width,
+                                      left: (28 / 390) * _width),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        // call function to edit data
+                                        userController.updateUser(
+                                          context,
+                                          currentUser.id,
+                                          _usernameController.text,
+                                          _firstNameController.text,
+                                          _lastNameController.text,
+                                          _nationalityController.text,
+                                          _genderController.text,
+                                          _emailController.text,
+                                          _dateOfBirthController.text,
+                                        );
+                                      },
+                                      child: Text(
+                                        'Confirm Edit',
+                                        style: TextStyle(
+                                            color: secondary,
+                                            fontFamily: 'sfprorounded',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: (16 / 844) * _height),
+                                      )),
+                                ),
+                        ],
                       ),
                       Expanded(
                         flex: 3,

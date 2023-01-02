@@ -5,6 +5,7 @@ import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/components/regular_text_input_new.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
+import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
 
 import '../common/components/match.dart';
 import '../controllers/match-controller.dart';
@@ -28,157 +29,211 @@ class _MatchViewState extends MomentumState<MatchView> {
     super.initMomentumState();
   }
 
-  final _nameController = TextEditingController();
-  final _seatCountController = TextEditingController();
+  final _homeTeamController = TextEditingController();
+  final _awayTeamController = TextEditingController();
+  final _stadiumController = TextEditingController();
+  final _dateTimeController = TextEditingController();
+  final _mainRefereeController = TextEditingController();
+  final _firstLinesmanController = TextEditingController();
+  final _secondLinesmanController = TextEditingController();
 
-  addNewMatch(BuildContext context) async {
+  addMatch(BuildContext context) async {
+    var matches = Momentum.controller<MatchController>(context).model;
+    var matcheController = Momentum.controller<MatchController>(context);
+    String homeTeamValue = "Argentina";
+    String awayTeamValue = "Australia";
+
+    var stadiums = Momentum.controller<StadiumController>(context).model;
+    // var stadiumsItems = stadiums.stadiumslist.map((e) => e.name ).toList();
+    // List<String> sitems = stadiumsItems as List<String>;
+    String stadiumValue = "Al Bayt Stadium";
+    // get team names from teams list inside matches model
+    // teamsItems = matches.teamNames.toString();
+
+    // stadiumsItems = stadiums.stadiumslist.map((e) => e.name).toList();
+
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.stadium_outlined, color: primary),
-            Text("Add Stadium"),
-          ],
-        ),
-        content: Container(
-          height: (200 / 844) * _height,
-          width: _width * 0.25,
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                // color: Colors.pink,
-                height: (72 / 844) * _height,
-                child: RegularTextInputNew(
-                  labelColor: secondary,
-                  textColor: secondary,
-                  fillColor: Colors.white,
-                  hintTextColor: Color(0x940A1F33),
-                  prefixIconColor: Color(0x94192B37),
-                  errorBorderColor: Color(0xFFFD7542),
-                  email: true,
-                  label: "Stadium Name",
-                  hintText: "Stadium Name",
-                  controller: _nameController,
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                alignment: Alignment.center,
-                // color: Colors.pink,
-                height: (40 / 844) * _height,
-                child: DropdownButtonFormField(
-                  dropdownColor: Color(0xFFECEFFD),
-
-                  style: const TextStyle(
-                      color: secondary,
-                      fontFamily: 'SfProRounded',
-                      fontSize: 14),
-                  // Initial Value
-                  value: dropDownValue,
-                  decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      isDense: true,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                          borderSide: BorderSide.none),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(6)),
-                      ),
-                      errorStyle: TextStyle(
-                          height: 0.1,
-                          fontSize: 10,
-                          fontFamily: 'SfProRounded',
-                          decoration: TextDecoration.underline),
-                      hintStyle:
-                          TextStyle(fontFamily: 'SfProRounded', fontSize: 14)),
-
-                  // Down Arrow Icon
-                  icon: const Icon(Icons.keyboard_arrow_down),
-
-                  // Array list of items
-                  items: shapeItems.map((String items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  // After selecting the desired option,it will
-                  // change button value to selected value
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropDownValue = newValue!;
-                    });
-                  },
-                ),
-              ),
-
-              // text field for seats count that takes number only
-              Container(
-                alignment: Alignment.center,
-                // color: Colors.pink,
-                height: (72 / 844) * _height,
-                child: RegularTextInputNew(
-                  labelColor: secondary,
-                  textColor: secondary,
-                  fillColor: Colors.white,
-                  hintTextColor: Color(0x940A1F33),
-                  prefixIconColor: Color(0x94192B37),
-                  errorBorderColor: Color(0xFFFD7542),
-                  email: true,
-                  label: "Seats Count",
-                  hintText: "Seats Count",
-                  controller: _seatCountController,
-                  keyboardType: TextInputType.number,
-                ),
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.edit, color: primary, size: 30),
+              Text(
+                "Add Match ",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: primary, fontSize: 22),
               ),
             ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // _addStadium(context);
-              Navigator.pop(context);
-            },
-            child: Text(
-              "Add",
-              style: TextStyle(
-                color: primary,
-                fontFamily: 'SfProRounded',
-                fontSize: 20,
+          content: SingleChildScrollView(
+            child: Container(
+              width: _width * 0.4,
+              height: _height * 0.7,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Home Team",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: homeTeamValue,
+                      items: teams.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          homeTeamValue = value!;
+                        });
+                      },
+                    ),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Away Team",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: awayTeamValue,
+                      items: teams.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          awayTeamValue = value!;
+                        });
+                      },
+                    ),
+                    DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        labelText: "Match Stadium",
+                        labelStyle: TextStyle(
+                          color: primary,
+                          fontSize: 16,
+                        ),
+                      ),
+                      value: stadiumValue,
+                      items: stadiums.stadiumsNames!.map((String items) {
+                        return DropdownMenuItem<String>(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          stadiumValue = value!;
+                        });
+                      },
+                    ),
+                    RegularTextInputNew(
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
+                      label: "Date & Time",
+                      controller: _dateTimeController,
+                    ),
+                    RegularTextInputNew(
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
+                      label: "Main Referee",
+                      controller: _mainRefereeController,
+                    ),
+                    RegularTextInputNew(
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
+                      label: "First Linesman",
+                      controller: _firstLinesmanController,
+                    ),
+                    RegularTextInputNew(
+                      fillColor: Colors.white,
+                      hintTextColor: Color(0x940A1F33),
+                      prefixIconColor: Color(0x94192B37),
+                      errorBorderColor: Color(0xFFFD7542),
+                      textColor: Color(0xFF0A1F33),
+                      labelColor: Color(0xFF0A1F33),
+                      label: "Second Linesman",
+                      controller: _secondLinesmanController,
+                    ),
+                    Container(
+                      width: _width * 0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            child: const Text('Cancel',
+                                style: TextStyle(
+                                    fontSize: 22, color: Colors.grey)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFFEC310),
+                            ),
+                            onPressed: () {
+                              //Add new match request
+                              matcheController.addMatch(
+                                  context,
+                                  homeTeamValue,
+                                  awayTeamValue,
+                                  stadiumValue,
+                                  _dateTimeController.text,
+                                  _firstLinesmanController.text,
+                                  _secondLinesmanController.text,
+                                  _mainRefereeController.text);
+
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Add',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 22),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
+
+  final _nameController = TextEditingController();
+  final _seatCountController = TextEditingController();
 
   Widget build(BuildContext context) {
     //screen width and height
@@ -211,7 +266,7 @@ class _MatchViewState extends MomentumState<MatchView> {
                     child: const Icon(Icons.add),
                     backgroundColor: primary,
                     onPressed: () {
-                      addNewMatch(context);
+                      addMatch(context);
                     },
                   )
                 : Container(),
@@ -246,6 +301,7 @@ class _MatchViewState extends MomentumState<MatchView> {
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => Match(
+                              id: matchModel.matcheslist[index].id,
                               firstTeam:
                                   matchModel.matcheslist[index].firstTeam.name,
                               secondTeam:

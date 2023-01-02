@@ -135,7 +135,6 @@ class AuthController extends MomentumController<AuthModel> {
       );
 
       if (response.statusCode == 200) {
-        print("okaaayyy id");
         var jsonResponse = convert.jsonDecode(response.body);
         var currentUser = CurrentUserType.fromJson(jsonResponse);
         model.update(currentUser: currentUser, id: jsonResponse["id"]);
@@ -159,7 +158,7 @@ class AuthController extends MomentumController<AuthModel> {
     }
   }
 
-  Future<void> getAllUsers(context, String userName) async {
+  Future<void> getAllUsers(context) async {
     try {
       var url = Uri.http(STAGING_URL, "/api/users/");
       var response = await http.get(
@@ -242,7 +241,7 @@ class AuthController extends MomentumController<AuthModel> {
     try {
       var url =
           Uri.http(STAGING_URL, "/api/user/accept/", {"id": id.toString()});
-      var response = await http.delete(
+      var response = await http.post(
         url,
         headers: {
           'Authorization':
@@ -274,6 +273,48 @@ class AuthController extends MomentumController<AuthModel> {
       );
     }
   }
+
+  Future<void> updateUser(
+      context,
+      int id,
+      String username,
+      String firstName,
+      String lastName,
+      String nationality,
+      String gender,
+      String email,
+      String birthDate) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/users/", {"id": id.toString()});
+      http.Response response = await http.put(url,
+          headers: {
+            'Authorization':
+                'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            "username": username,
+            "firstName": firstName,
+            "lastName": lastName,
+            "birthDate": birthDate,
+            "gender": gender,
+            "nationality": nationality,
+            "email": email,
+          }));
+
+      if (response.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        var currentUser = CurrentUserType.fromJson(jsonResponse);
+        model.update(currentUser: currentUser, id: jsonResponse["id"]);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+  
 
   // void goToHomePage(context, Ticket? toBeRatedTicket) {
   //   Navigator.push(
@@ -606,4 +647,3 @@ class AuthController extends MomentumController<AuthModel> {
   //     debugPrint("Error caught in setFcmToken ${e.toString()}");
   //   }
   // }
-}

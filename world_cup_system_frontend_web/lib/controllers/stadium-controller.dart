@@ -15,11 +15,11 @@ class StadiumController extends MomentumController<StadiumModel> {
   StadiumModel init() {
     return StadiumModel(
       this,
-      id: 0,
-      name: "Al Bayt Stadium",
-      shape: "rectangular",
-      seatsCount: 0,
-      vipLounge: false,
+      // id: 0,
+      // name: "Al Bayt Stadium",
+      // shape: "rectangular",
+      // seatsCount: 0,
+      // vipLounge: false,
       stadiumslist: [],
     );
   }
@@ -44,18 +44,22 @@ class StadiumController extends MomentumController<StadiumModel> {
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body) as List<dynamic>;
         List stadiums = [];
+        List<String> stadiumsNames = [];
         for (var responseItem in jsonResponse) {
-          final stadium = StadiumModel(
-            this,
+          final stadium = Stadium(
             id: responseItem["id"],
             name: responseItem["name"],
             shape: responseItem["shape"],
             seatsCount: responseItem["seatsCount"],
-            vipLounge: responseItem["vipLounge"],
+            vipSeatsCount: responseItem["vipSeatsCount"],
+            vipRows: responseItem["vipRows"],
+            vipColumns: responseItem["vipColumns"],
           );
           stadiums.add(stadium);
+          stadiumsNames.add(stadium.name);
         }
-        model.update(stadiumslist: stadiums);
+
+        model.update(stadiumslist: stadiums, stadiumsNames: stadiumsNames);
       }
     } catch (e) {
       print(e);
@@ -78,7 +82,7 @@ class StadiumController extends MomentumController<StadiumModel> {
 
       if (response.statusCode == 200) {
         model.update(
-            stadiumslist: model.stadiumslist
+            stadiumslist: model.stadiumslist!
                 .where((stadium) => stadium.id != id)
                 .toList());
       }
@@ -87,8 +91,8 @@ class StadiumController extends MomentumController<StadiumModel> {
     }
   }
 
-  Future<void> addStadium(
-      context, String name, String shape, int seatCount) async {
+  Future<void> addStadium(context, String name, String shape, int seatCount,
+      int vipSeats, int vipRows, int vipCounts) async {
     try {
       var url = Uri.http(STAGING_URL, "/api/stadium/");
       var response = await http.post(
@@ -103,22 +107,28 @@ class StadiumController extends MomentumController<StadiumModel> {
         body: jsonEncode(<String, dynamic>{
           "name": name,
           "shape": shape,
-          "seatsCount": seatCount
+          "seatsCount": seatCount,
+          "vipSeatsCount": vipSeats,
+          "vipRows": vipRows,
+          "vipColumns": vipCounts,
         }),
       );
 
       if (response.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(response.body);
         // add stadium to list
-        var stadium = StadiumModel(
-          this,
+        var stadium = Stadium(
           id: jsonResponse["id"],
-          name: name,
-          shape: shape,
-          seatsCount: seatCount,
+          name: jsonResponse["name"],
+          shape: jsonResponse["shape"],
+          seatsCount: jsonResponse["seatsCount"],
+          vipSeatsCount: jsonResponse["vipLounge"],
+          vipColumns: jsonResponse["vipColumns"],
+          vipRows: jsonResponse["vipRows"],
         );
+
         // add stadium to list of stadiums
-        model.update(stadiumslist: [...model.stadiumslist, stadium]);
+        model.update(stadiumslist: [...model.stadiumslist!, stadium]);
       }
     } catch (e) {
       print(e);

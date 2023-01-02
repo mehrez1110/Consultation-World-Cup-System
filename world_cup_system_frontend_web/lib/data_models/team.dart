@@ -25,4 +25,14 @@ class Team {
       rating: jsonResponse['rating'],
     );
   }
+
+  // convert to json
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'winsCount': winsCount,
+        'drawsCount': drawsCount,
+        'lossCount': lossCount,
+        'rating': rating,
+      };
 }

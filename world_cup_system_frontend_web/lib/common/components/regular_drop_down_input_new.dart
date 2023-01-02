@@ -28,6 +28,7 @@ class RegularDropDownInputNew extends StatefulWidget {
   final prefixIconColor;
   final errorBorderColor;
   final price;
+  String value;
   final bool team;
   final showPassword;
   final bool shape;
@@ -42,6 +43,7 @@ class RegularDropDownInputNew extends StatefulWidget {
     this.hintText = "",
     this.prefix,
     this.protectedText = false,
+    required this.value,
     this.mandatory = false,
     this.description = false,
     this.inputFormatters,
@@ -156,6 +158,7 @@ class _RegularTextInputState extends State<RegularDropDownInputNew> {
           Container(
             // height: 40,
             child: DropdownButtonFormField(
+              value: widget.value,
               validator: widget.validator,
               dropdownColor: secondary,
 
@@ -231,7 +234,9 @@ class _RegularTextInputState extends State<RegularDropDownInputNew> {
                             }).toList()
                           : null,
 
-              onChanged: (String? value) {},
+              onChanged: (String? val) {
+                widget.value = val!;
+              },
             ),
           ),
         ],

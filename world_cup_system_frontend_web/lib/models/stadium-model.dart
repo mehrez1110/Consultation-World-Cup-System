@@ -6,21 +6,14 @@ import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dar
 // These are simply models which hold data for a view. The actions/events are still under the domain of a controller.
 
 class StadiumModel extends MomentumModel<StadiumController> {
-  final id;
-  final name;
-  final shape;
-  final seatsCount;
-  final vipLounge;
   final stadiumslist;
+
+  final List<String>? stadiumsNames;
 
   StadiumModel(
     StadiumController controller, {
-    this.id,
-    this.name,
-    this.shape,
-    this.seatsCount,
-    this.vipLounge,
     this.stadiumslist,
+    this.stadiumsNames,
   }) : super(controller);
 
   @override
@@ -31,26 +24,61 @@ class StadiumModel extends MomentumModel<StadiumController> {
     seatsCount,
     vipLounge,
     stadiumslist,
+    List<String>? stadiumsNames,
   }) {
     StadiumModel(
       controller,
-      id: id ?? this.id,
-      name: name ?? this.name,
-      shape: shape ?? this.shape,
-      seatsCount: seatsCount ?? this.seatsCount,
-      vipLounge: vipLounge ?? this.vipLounge,
       stadiumslist: stadiumslist ?? this.stadiumslist,
+      stadiumsNames: stadiumsNames ?? this.stadiumsNames,
     ).updateMomentum();
   }
 
   static fromJson2(responseItem) {
     return StadiumModel(
       StadiumController(),
+    );
+  }
+}
+
+class Stadium {
+  final id;
+  final name;
+  final shape;
+  final seatsCount;
+  final vipSeatsCount;
+  final vipRows;
+  final vipColumns;
+
+  Stadium({
+    this.id,
+    this.name,
+    this.shape,
+    this.seatsCount,
+    this.vipSeatsCount,
+    this.vipRows,
+    this.vipColumns,
+  });
+
+  static fromJson(responseItem) {
+    return Stadium(
       id: responseItem['id'],
       name: responseItem['name'],
       shape: responseItem['shape'],
       seatsCount: responseItem['seatsCount'],
-      vipLounge: responseItem['vipLounge'],
+      vipSeatsCount: responseItem['vipLounge'],
+      vipColumns: responseItem['vipColumns'],
+      vipRows: responseItem['vipRows'],
     );
   }
+
+  // convert to json
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'shape': shape,
+        'seatsCount': seatsCount,
+        'vipSeatsCount': vipSeatsCount,
+        'vipColumns': vipColumns,
+        'vipRows': vipRows,
+      };
 }

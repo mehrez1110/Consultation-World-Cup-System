@@ -141,4 +141,52 @@ class MatchController extends MomentumController<MatchModel> {
       print(e);
     }
   }
+
+  Future<void> addMatch(
+      context,
+      String homeTeam,
+      String awayTeam,
+      String matchStadium,
+      String matchDate,
+      String lineManA,
+      String lineManB,
+      String referee) async {
+    try {
+      var stadiums = Momentum.controller<StadiumController>(context).model;
+
+      print(stadiums.stadiumslist[0].name);
+      //print(stadiumModelList[0].toJson());
+      var url = Uri.http(STAGING_URL, "/api/matches/");
+      http.Response response = await http.post(url,
+          headers: {
+            'Authorization':
+                'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            // get team object from team list by name
+            "matchStadium": (stadiums.stadiumslist!
+                    .firstWhere((element) => element.name == matchStadium))
+                .toJson(),
+
+            "homeTeam": (model.teamsList!
+                .firstWhere((element) => element.name == homeTeam)).toJson(),
+            "awayTeam": (model.teamsList!
+                .firstWhere((element) => element.name == awayTeam)).toJson(),
+
+            "matchDate": matchDate,
+            "lineManA": lineManA,
+            "lineManB": lineManB,
+            "referee": referee,
+          }));
+
+      if (response.statusCode == 200) {
+        print(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

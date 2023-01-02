@@ -8,6 +8,7 @@ import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/match-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/stadium-controller.dart';
+import 'package:world_cup_system_frontend_web/views/admin_users_view.dart';
 import 'package:world_cup_system_frontend_web/views/matches-view.dart';
 import 'package:world_cup_system_frontend_web/views/sign-in-view.dart';
 import 'package:world_cup_system_frontend_web/views/stadium-view.dart';
@@ -294,7 +295,7 @@ class _NavigationBarState extends MomentumState<NavigationBarViewNew>
                                     MatchView(),
                                     TicketsView(),
                                     StadiumView(), //stadiums
-                                    MatchView(), //users
+                                    AdminUsersView(), //users
                                     UserProfile(), //profile
                                   ],
                                 )
