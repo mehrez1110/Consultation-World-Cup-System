@@ -8,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/controllers/ticket-controller.dart';
 
+import 'new-creditcard-sheet.dart';
+
 class MatchTicket extends StatelessWidget {
   final id;
   final firstTeam;
@@ -72,14 +74,18 @@ class MatchTicket extends StatelessWidget {
                         backgroundColor: const Color(0xFFFEC310),
                       ),
                       onPressed: () {
-                        Momentum.controller<TicketController>(context)
-                            .bookTicket(
-                                id,
-                                matchId,
-                                Momentum.controller<AuthController>(context)
-                                    .model
-                                    .id,
-                                context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: primary,
+                            insetPadding: EdgeInsets.all(0),
+                            content: NewCreditCardView(
+                                isVip: false,
+                                ticketId: id,
+                                matchId: matchId,
+                                price: price),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Yes',

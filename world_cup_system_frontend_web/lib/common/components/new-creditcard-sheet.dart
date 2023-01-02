@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
 import '../../controllers/auth-controller.dart';
+import '../../controllers/ticket-controller.dart';
 import '../../controllers/vip-ticket-controller.dart';
 import '../constants.dart';
 import 'creditcard-text-input.dart';
@@ -13,7 +14,9 @@ class NewCreditCardView extends StatefulWidget {
   final ticketId;
   final matchId;
   final price;
-  NewCreditCardView({Key? key, this.ticketId, this.matchId, this.price})
+  final isVip;
+  NewCreditCardView(
+      {Key? key, this.ticketId, this.matchId, this.price, this.isVip = true})
       : super(key: key);
 
   @override
@@ -262,19 +265,34 @@ class _MyHomePageState extends State<NewCreditCardView> {
                                     expiryFieldCtrl.text.split('/');
                                 List<String> fullName =
                                     cardHolderNameTextCtrl.text.split(' ');
-                                Momentum.controller<VipTicketController>(
-                                        context)
-                                    .bookVipTicket(
-                                        widget.ticketId,
-                                        widget.matchId,
-                                        Momentum.controller<AuthController>(
-                                                context)
-                                            .model
-                                            .id,
-                                        context);
-                                Navigator.pop(
-                                  context,
-                                );
+                                if (widget.isVip) {
+                                  Momentum.controller<VipTicketController>(
+                                          context)
+                                      .bookVipTicket(
+                                          widget.ticketId,
+                                          widget.matchId,
+                                          Momentum.controller<AuthController>(
+                                                  context)
+                                              .model
+                                              .id,
+                                          context);
+                                  Navigator.pop(
+                                    context,
+                                  );
+                                } else {
+                                  Momentum.controller<TicketController>(context)
+                                      .bookTicket(
+                                          widget.ticketId,
+                                          widget.matchId,
+                                          Momentum.controller<AuthController>(
+                                                  context)
+                                              .model
+                                              .id,
+                                          context);
+                                  Navigator.pop(
+                                    context,
+                                  );
+                                }
                               }
                             },
                             signIn: false,
