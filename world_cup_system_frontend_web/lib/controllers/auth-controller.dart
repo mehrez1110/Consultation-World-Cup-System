@@ -378,6 +378,9 @@ class AuthController extends MomentumController<AuthModel> {
           ],
         ),
       );
+    }
+  }
+
   Future<void> signUpAsFan(
       context,
       String username,
