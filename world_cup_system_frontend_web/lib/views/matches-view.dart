@@ -245,6 +245,7 @@ class _MatchViewState extends MomentumState<MatchView> {
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) => Match(
+                              id: matchModel.matcheslist[index].id,
                               firstTeam:
                                   matchModel.matcheslist[index].firstTeam.name,
                               secondTeam:
