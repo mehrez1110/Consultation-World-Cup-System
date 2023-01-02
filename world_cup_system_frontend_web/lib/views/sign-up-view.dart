@@ -9,6 +9,7 @@ import 'package:world_cup_system_frontend_web/common/components/guest-button.dar
 import 'package:world_cup_system_frontend_web/common/components/signup-button.dart';
 import 'package:world_cup_system_frontend_web/common/constants.dart';
 import 'package:world_cup_system_frontend_web/common/components/signin-button.dart';
+import 'package:world_cup_system_frontend_web/controllers/auth-controller.dart';
 import 'package:world_cup_system_frontend_web/views/navigations-view-new.dart';
 
 import '../common/components/regular_text_input_new.dart';
@@ -55,7 +56,7 @@ class _SignUpState extends MomentumState<SignUp> {
 
   //Role items
   String dropDownValueRole = 'Fan';
-  var roleItems = ['Manager', 'Fan'];
+  var roleItems = ['Manager', 'Fan', 'Admin'];
 
   late StreamSubscription _connectivitySubscription;
   bool? _isConnectionSuccessful;
@@ -68,8 +69,10 @@ class _SignUpState extends MomentumState<SignUp> {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+
+    final _userController = Momentum.controller<AuthController>(context);
     return MomentumBuilder(
-        controllers: [],
+        controllers: [AuthController],
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor:
@@ -259,7 +262,7 @@ class _SignUpState extends MomentumState<SignUp> {
                                                         Color(0xFFFD7542),
                                                     email: true,
                                                     label: "Date of Birth",
-                                                    hintText: "Date of Birth",
+                                                    hintText: "yyyy-mm-dd",
                                                     controller:
                                                         _dateOfBirthController,
                                                     keyboardType:
@@ -574,10 +577,69 @@ class _SignUpState extends MomentumState<SignUp> {
                                             var loadingState = false;
                                             // snapshot<AuthModel>().loginInProgress;
                                             return SignUpButton(
-                                              getStarted: false,
-                                              signIn: true,
-                                              onPressed: _submit,
-                                            );
+                                                getStarted: false,
+                                                signIn: true,
+                                                onPressed:
+                                                    dropDownValueRole == "Admin"
+                                                        ? () {
+                                                            _userController.signUpAsAdmin(
+                                                                context,
+                                                                _usernameController
+                                                                    .text,
+                                                                _passwordController
+                                                                    .text,
+                                                                _firstNameController
+                                                                    .text,
+                                                                _lastNameController
+                                                                    .text,
+                                                                _nationalityController
+                                                                    .text,
+                                                                dropdownvalue,
+                                                                _emailController
+                                                                    .text,
+                                                                _dateOfBirthController
+                                                                    .text);
+                                                          }
+                                                        : dropDownValueRole ==
+                                                                "Manager"
+                                                            ? () {
+                                                                _userController.signUpAsManager(
+                                                                    context,
+                                                                    _usernameController
+                                                                        .text,
+                                                                    _passwordController
+                                                                        .text,
+                                                                    _firstNameController
+                                                                        .text,
+                                                                    _lastNameController
+                                                                        .text,
+                                                                    _nationalityController
+                                                                        .text,
+                                                                    dropdownvalue,
+                                                                    _emailController
+                                                                        .text,
+                                                                    _dateOfBirthController
+                                                                        .text);
+                                                              }
+                                                            : () {
+                                                                _userController.signUpAsFan(
+                                                                    context,
+                                                                    _usernameController
+                                                                        .text,
+                                                                    _passwordController
+                                                                        .text,
+                                                                    _firstNameController
+                                                                        .text,
+                                                                    _lastNameController
+                                                                        .text,
+                                                                    _nationalityController
+                                                                        .text,
+                                                                    dropdownvalue,
+                                                                    _emailController
+                                                                        .text,
+                                                                    _dateOfBirthController
+                                                                        .text);
+                                                              });
                                           }),
                                       // add space between buttons
 

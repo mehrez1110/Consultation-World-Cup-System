@@ -378,6 +378,129 @@ class AuthController extends MomentumController<AuthModel> {
           ],
         ),
       );
+  Future<void> signUpAsFan(
+      context,
+      String username,
+      String password,
+      String firstName,
+      String lastName,
+      String nationality,
+      String gender,
+      String email,
+      String birthDate) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/register-as-user");
+      http.Response response = await http.post(url,
+          headers: {
+            // 'Authorization':
+            //     'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            "username": username,
+            "password": password,
+            "firstName": firstName,
+            "lastName": lastName,
+            "birthDate": birthDate,
+            "gender": gender,
+            "nationality": nationality,
+            "email": email,
+            "role": null,
+          }));
+
+      if (response.statusCode == 201) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        //var currentUser = CurrentUserType.fromJson(jsonResponse);
+        //model.update(currentUser: currentUser, id: jsonResponse["id"]);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> signUpAsManager(
+      context,
+      String username,
+      String password,
+      String firstName,
+      String lastName,
+      String nationality,
+      String gender,
+      String email,
+      String birthDate) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/register-as-manager", {});
+      http.Response response = await http.post(url,
+          headers: {
+            // 'Authorization':
+            //     'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            "username": username,
+            "password": password,
+            "firstName": firstName,
+            "lastName": lastName,
+            "birthDate": birthDate,
+            "gender": gender,
+            "nationality": nationality,
+            "email": email,
+            "role": null,
+          }));
+
+      if (response.statusCode == 201) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        // var currentUser = CurrentUserType.fromJson(jsonResponse);
+        // model.update(currentUser: currentUser, id: jsonResponse["id"]);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> signUpAsAdmin(
+      context,
+      String username,
+      String password,
+      String firstName,
+      String lastName,
+      String nationality,
+      String gender,
+      String email,
+      String birthDate) async {
+    try {
+      var url = Uri.http(STAGING_URL, "/api/register-as-admin", {});
+      http.Response response = await http.post(url,
+          headers: {
+            // 'Authorization':
+            //     'Bearer ${Momentum.controller<AuthController>(context).model.tempToken}',
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          },
+          body: jsonEncode({
+            "username": username,
+            "password": password,
+            "firstName": firstName,
+            "lastName": lastName,
+            "birthDate": birthDate,
+            "gender": gender,
+            "nationality": nationality,
+            "email": email,
+            "ROLE": null,
+          }));
+
+      if (response.statusCode == 201) {
+        var jsonResponse = convert.jsonDecode(response.body);
+        //var currentUser = CurrentUserType.fromJson(jsonResponse);
+        //model.update(currentUser: currentUser, id: jsonResponse["id"]);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

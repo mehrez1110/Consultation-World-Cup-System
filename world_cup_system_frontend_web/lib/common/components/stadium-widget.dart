@@ -115,20 +115,8 @@ class StadiumWidget extends StatelessWidget {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        fixedSize: Size(_width * 0.07, _height * 0.04)),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(Icons.edit),
-                        Text("Edit"),
-                      ],
-                    )),
                 ElevatedButton(
                     // style: ,
                     style:
